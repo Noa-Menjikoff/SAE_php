@@ -20,7 +20,9 @@ if (isset($_POST['login'])) {
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user'] = $user;
-
+        if ($user['username'] === 'admin') {
+            $_SESSION['adm'] = TRUE;
+        }
         header("Location: ../accueil.php?registration_success=1");
         exit;
 
