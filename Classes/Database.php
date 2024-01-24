@@ -29,6 +29,32 @@ class Database {
         return $stmt->execute();
     }
 
+    public function updateProfileImage($username, $imageData) {
+        $sql = "UPDATE Utilisateurs SET image_profil = :imageData WHERE username = :username";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':imageData', $imageData, PDO::PARAM_LOB);
+            $stmt->bindParam(':username', $username, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur de mise à jour de l'image du profil : " . $e->getMessage();
+        }
+    }
+
+    public function getProfileImageByUsername($username) {
+        $sql = "SELECT image_profil FROM Utilisateurs WHERE username = :username";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->execute(array(':username' => $username));
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération de l'image du profil : " . $e->getMessage();
+        }
+    }
+
     
     public function closeConnection() {
         $this->conn = null;

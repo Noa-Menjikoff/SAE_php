@@ -19,6 +19,7 @@ if (isset($_POST['login'])) {
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user'] = $user;
 
         header("Location: accueil.php?registration_success=1");
         exit;
@@ -40,6 +41,7 @@ if (isset($_POST['login'])) {
     if ($success) {
         $user = $db->getUserParNomUtilisateur($username);
         $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user'] = $user;
         header("Location: accueil.php?registration_success=1");
         exit;
     } else {

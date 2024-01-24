@@ -11,6 +11,7 @@ DROP TABLE IF EXISTS Utilisateurs;
 CREATE TABLE Utilisateurs (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL,
+    image_profil LONGBLOB DEFAULT NULL,
     password VARCHAR(255) NOT NULL
 );
 
