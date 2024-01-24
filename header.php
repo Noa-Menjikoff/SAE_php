@@ -1,5 +1,14 @@
 <?php
+session_start();
 
+if (isset($_GET['action']) && $_GET['action'] == 'deconnexion') {
+    session_unset();
+
+    session_destroy();
+    
+    header('Location: index.php');
+    exit();
+}
 
 
 echo '<header>';
@@ -9,7 +18,11 @@ echo '<header>';
             echo '<li><a href="accueil.php">Accueil</a></li>';
             echo '<li><a href="artistes.php">Artistes</a></li>';
             echo '<li><a href="">Album</a></li>';
-            echo '<li><a href="">Déconnexion</a></li>';
+            if($_SESSION['user']===NULL)
+                echo '<li><a href="login.php">Connexion</a></li>';
+            else
+                echo '<li><a href="?action=deconnexion">Déconnexion</a></li>';
+
         echo '</ul>';
     echo '</nav>';
 

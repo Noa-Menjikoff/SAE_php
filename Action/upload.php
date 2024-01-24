@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($result > 0) {
             echo "<script>alert('L\'image a été téléchargée et mise à jour avec succès dans la base de données.');</script>";
             $_SESSION['user']['image_profil'] = $imageData;
-            echo "<script>setTimeout(function(){ window.location.href = 'profil.php'; }, 100);</script>";
+            echo "<script>setTimeout(function(){ window.location.href = '../profil.php'; }, 100);</script>";
         } else {
             echo "<script>alert('Erreur lors de la mise à jour de l\'image dans la base de données.');</script>";
             // Vous pouvez également rediriger vers la page profil en cas d'erreur si nécessaire

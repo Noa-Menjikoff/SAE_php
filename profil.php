@@ -15,7 +15,7 @@ require 'header.php';
 
 ?>
 
-<form action="upload.php" method="post" enctype="multipart/form-data">
+<form action="Action/upload.php" method="post" enctype="multipart/form-data">
         <label for="image">Sélectionnez une image :</label>
         <input type="file" name="image" id="image" accept="image/*">
         <br>
