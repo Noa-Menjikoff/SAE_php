@@ -1,0 +1,68 @@
+[
+  {
+    "id":1,
+    "titre": "Quiz 1",
+    "questions":[
+      {
+        "id": 1,
+        "type": "radio",
+        "label": "Qui est le champion du monde de F1 2023 ? ",
+        "choices": ["Lewis Hamilton", "Kevin Magnussen","Max Verstappen", "Charles Leclerc"],
+        "correct": "Charles Leclerc"
+      },
+      {
+        "id": 2,
+        "type": "text",
+        "label": "2 + 2 = ? ",
+        "correct": "58"
+      },
+      {
+        "id": 3,
+        "type": "radio",
+        "label": "Combien y a-t-il de kevin sur Terre ? ",
+        "choices": ["reponse 2", "reponse 3", "reponse 1"],
+        "correct": "reponse 1"
+      },
+      {
+        "id": 4,
+        "type": "text",
+        "label": "Un debile + Un homme = ? ",
+        "correct": "Theo"
+      }
+    ]
+  },
+  {
+    "id":2,
+    "titre": "Quiz 2",
+    "questions":[
+      {
+        "id": 1,
+        "type": "radio",
+        "label": "Qui est le champion du monde de F1 2023 ? ",
+        "choices": ["Lewis Hamilton", "Kevin Magnussen","Max Verstappen", "Charles Leclerc"],
+        "correct": "Charles Leclerc"
+      },
+      {
+        "id": 2,
+        "type": "text",
+        "label": "2 + 2 = ? ",
+        "correct": "58"
+      },
+      {
+        "id": 3,
+        "type": "radio",
+        "label": "Combien y a-t-il de kevin sur Terre ? ",
+        "choices": ["reponse 2", "reponse 3", "reponse 1"],
+        "correct": "reponse 1"
+      },
+      {
+        "id": 4,
+        "type": "text",
+        "label": "Un debile + Un homme = ? ",
+        "correct": "Theo"
+      }
+    ]
+  }
+    
+]
+  
