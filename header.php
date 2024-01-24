@@ -22,6 +22,10 @@ echo '<header>';
                 echo '<li><a href="login.php">Connexion</a></li>';
             else
                 echo '<li><a href="?action=deconnexion">Déconnexion</a></li>';
+            if($_SESSION['adm']===TRUE)
+                echo '<li><a href="adm.php">Admin</a></li>';
+ 
+
 
         echo '</ul>';
     echo '</nav>';
