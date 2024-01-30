@@ -1,6 +1,6 @@
 <?php
 session_start();
-require '../Classes/Database.php'; 
+require '../Classes/test.php'; 
 $db = new Database(); 
 
 $form = $_SESSION['form'];

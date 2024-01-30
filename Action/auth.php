@@ -3,10 +3,10 @@ session_start();
 
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', dirname(__FILE__));
-    require_once BASE_PATH . '/../Classes/Database.php';
+    require_once BASE_PATH . '/../BD/test.php';
 }
 else{
-    require_once BASE_PATH . '/Classes/Database.php';
+    require_once BASE_PATH . '/BD/test.php';
 }
 
 if (isset($_POST['login'])) {

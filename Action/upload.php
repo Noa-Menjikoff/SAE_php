@@ -1,6 +1,6 @@
 <?php
 // upload.php
-require_once '../Classes/Database.php';
+require_once '../Classes/test.php';
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

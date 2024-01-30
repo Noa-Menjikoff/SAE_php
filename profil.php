@@ -9,7 +9,7 @@
     <title>Document</title>
 </head>
 <?php
-require 'Classes/Database.php';
+require 'Classes/test.php';
 $db = new Database();
 require 'header.php';
 
