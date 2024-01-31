@@ -15,44 +15,29 @@ $dbPath ='BD/sae.sqlite3';
 $db = new Database($dbPath);
 require 'header.php';
 
-$artiste = $db->getArtisteById($id);
-$albums = $db->getAlbumsByArtistId($id);
+$album = $db->getAlbumById($id);
+
 ?>
 
 <main>
 <div class="contenu-detail-artiste">
       <div class="image-artiste">
         <?php   
-            if ($artiste['photo']===NULL){
+            if ($album['img']===NULL){
                 echo '<img src="IMG/default.png" alt="user">';
             }   
             else{
-                $imageData = $artiste['photo'];
+                $imageData = $album['img'];
                 echo '<img src="data:image;base64,' . $imageData . '" alt="user">';
             }
         ?>
       </div>
       <div class="texte-artiste">
-        <h1><?php echo $artiste['prenom']; ?></h1>
+        <h1><?php echo $album['nom']; ?></h1>
         <p class="description-artiste">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores, non explicabo. Recusandae fugiat eaque excepturi, aliquid enim repellat! Quaerat ipsum eius consequatur fuga illum tempore nobis vel tempora delectus nostrum?</p>
 
       </div>
 </div>
-<h1>Les albums</h1>
 
-<div class="albums">
-    <a href="">
-    <?php  
-        foreach($albums as $album){
-            echo '<div class="album">';
-            echo '<h2>' . $album['nom'] . '</h2>';
-            echo '<p>Date: ' . $album['date_sortie'] . '</p>';
-            echo '<p>Description: ' . $album['description'] . '</p>';
-            echo '</div>';
-        }
-    ?>
-    </a>
-
-</div>
 </main>
 

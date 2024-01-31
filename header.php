@@ -17,7 +17,7 @@ echo '<header>';
         echo '<ul>';
             echo '<li><a href="accueil.php">Accueil</a></li>';
             echo '<li><a href="artistes.php">Artistes</a></li>';
-            echo '<li><a href="">Album</a></li>';
+            echo '<li><a href="albums.php">Album</a></li>';
             if($_SESSION['user']===NULL)
                 echo '<li><a href="login.php">Connexion</a></li>';
             else

@@ -58,6 +58,7 @@ try {
         date_sortie DATE NOT NULL,
         description TEXT NOT NULL,
         artiste_id INT NOT NULL,
+        img BLOB DEFAULT NULL,
         FOREIGN KEY (artiste_id) REFERENCES Artistes(id)
     )");
 
@@ -116,6 +117,7 @@ function insertDataFromYAML($file_db, $yamlFile)
         $prenom = $entry['parent'];
         $yearA = $entry['releaseYear'];
         $description = $entry['title'];
+        $titre = $entry['title'];
 
         // Check if the artist exists in the table Artistes
         $stmtCheckArtist = $file_db->prepare("SELECT id FROM Artistes WHERE prenom = :prenom");
@@ -139,7 +141,7 @@ function insertDataFromYAML($file_db, $yamlFile)
         // Insert the album into the table Albums
         $stmtInsertAlbum = $file_db->prepare("INSERT INTO Albums (id, nom, date_sortie, description, artiste_id) VALUES (:id, :nom, :date_sortie, :description, :artiste_id)");
         $stmtInsertAlbum->bindParam(':id', $id);
-        $stmtInsertAlbum->bindParam(':nom', $prenom);
+        $stmtInsertAlbum->bindParam(':nom', $titre);
         $stmtInsertAlbum->bindParam(':date_sortie', $yearA);
         $stmtInsertAlbum->bindParam(':description', $description);
         $stmtInsertAlbum->bindParam(':artiste_id', $artistID);

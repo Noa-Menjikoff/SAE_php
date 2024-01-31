@@ -63,6 +63,20 @@ class Database {
         }
     }
 
+    public function updateAlbumImage($id, $imageData) {
+        $sql = "UPDATE Albums SET img = :imageData WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':imageData', $imageData, PDO::PARAM_LOB); // Assuming BLOB data type
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur de mise à jour de l'image du profil : " . $e->getMessage();
+        }
+    }
+
     public function getProfileImageByUsername($username) {
         $sql = "SELECT image_profil FROM Utilisateurs WHERE username = :username";
     
@@ -81,6 +95,19 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getAlbums() {
+        $stmt = $this->conn->prepare("SELECT * FROM Albums");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+    
+    public function getAlbumById($idAlbum) {
+        $stmt = $this->conn->prepare("SELECT * FROM Albums WHERE id = :id_album");
+        $stmt->bindParam(':id_album', $idAlbum, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function deleteArtiste($idArtiste) {
         $stmt = $this->conn->prepare("DELETE FROM Artistes WHERE id = :id_artiste");
         $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
@@ -91,6 +118,13 @@ class Database {
         $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getAlbumsByArtistId($idArtiste) {
+        $stmt = $this->conn->prepare("SELECT * FROM Albums WHERE artiste_id = :artiste_id");
+        $stmt->bindParam(':artiste_id', $idArtiste, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function closeConnection() {

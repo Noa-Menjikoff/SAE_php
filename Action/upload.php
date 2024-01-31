@@ -16,6 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $database->updateArtisteImage($id, $imageData);
     } else if ($table == 'Utilisateurs') {
         $result = $database->updateProfileImage($username, $imageData);
+    } elseif ($table == 'Albums') {
+        $id = $_POST['id'];
+        $result = $database->updateAlbumImage($id, $imageData);
     }
         
 
