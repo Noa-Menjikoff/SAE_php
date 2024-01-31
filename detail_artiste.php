@@ -41,17 +41,18 @@ $albums = $db->getAlbumsByArtistId($id);
 <h1>Les albums</h1>
 
 <div class="albums">
-    <a href="">
+    
     <?php  
         foreach($albums as $album){
+            echo '<a href="detail_album.php?id='.$album["id"].'">';
             echo '<div class="album">';
             echo '<h2>' . $album['nom'] . '</h2>';
             echo '<p>Date: ' . $album['date_sortie'] . '</p>';
             echo '<p>Description: ' . $album['description'] . '</p>';
             echo '</div>';
+            echo '</a>';
         }
     ?>
-    </a>
 
 </div>
 </main>

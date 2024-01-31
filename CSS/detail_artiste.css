@@ -32,8 +32,13 @@
     margin-bottom: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 25vw;
-    margin: 5px;
+    width: 20vw;
+    height: 25vh;
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .albums a{
