@@ -1,17 +1,22 @@
 <?php
 // upload.php
-require_once '../Classes/test.php';
+require_once '../BD/Database.php';
 
 // Vérifier si le formulaire a été soumis
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_SESSION['user']['username'];
+    $table = $_POST['table']; // Récupérer la valeur de l'input
 
-    
-        $imageData = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+    $imageData = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
+    $dbPath ='../BD/sae.sqlite3'; 
+    $database = new Database($dbPath);
 
-        $database = new Database();
-
+    if ($table == 'Artistes') {
+        $id = $_POST['id'];
+        $result = $database->updateArtisteImage($id, $imageData);
+    } else if ($table == 'Utilisateurs') {
         $result = $database->updateProfileImage($username, $imageData);
+    }
         
 
         if ($result > 0) {

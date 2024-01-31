@@ -1,0 +1,18 @@
+.artiste-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.artiste-card .artiste-name {
+    margin-right: 10px;
+}
+
+.artiste-card .btn-modify,
+.artiste-card .btn-delete {
+    padding: 5px 10px;
+    background-color: #f1f1f1;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}

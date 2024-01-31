@@ -1,0 +1,19 @@
+
+.contenu-detail-artiste{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 10%;
+    flex-direction: row-reverse;
+}
+
+.contenu-detail-artiste:not(:first-child){
+    align-items: center;
+}
+
+.description-artiste{
+    width: 70%;
+}
+
+.image-artiste > img{
+    width: 30vw;
+}

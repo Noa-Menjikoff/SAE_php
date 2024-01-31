@@ -8,11 +8,14 @@ session_start();
 class Database {
     private $conn;
 
-    public function __construct() {
+    private $dbPath; 
+    public function __construct($dbPath) {
+        $this->dbPath = $dbPath;
+
         try {
-            $this->conn = new PDO('sqlite:../BD/sae.sqlite3');
+            $this->conn = new PDO('sqlite:' . $this->dbPath);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            echo "Connected to the database successfully.<br>";
+            // echo "Connected to the database successfully.<br>";
         } catch (PDOException $e) {
             echo "Erreur de connexion à la base de données : " . $e->getMessage();
         }
@@ -46,6 +49,20 @@ class Database {
         }
     }
 
+    public function updateArtisteImage($id, $imageData) {
+        $sql = "UPDATE Artistes SET photo = :imageData WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':imageData', $imageData, PDO::PARAM_LOB); // Assuming BLOB data type
+            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur de mise à jour de l'image du profil : " . $e->getMessage();
+        }
+    }
+
     public function getProfileImageByUsername($username) {
         $sql = "SELECT image_profil FROM Utilisateurs WHERE username = :username";
     
@@ -56,6 +73,24 @@ class Database {
         } catch (PDOException $e) {
             echo "Erreur lors de la récupération de l'image du profil : " . $e->getMessage();
         }
+    }
+
+    public function getArtistes() {
+        $stmt = $this->conn->prepare("SELECT * FROM Artistes");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteArtiste($idArtiste) {
+        $stmt = $this->conn->prepare("DELETE FROM Artistes WHERE id = :id_artiste");
+        $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
+        return $stmt->execute();
+    }
+    public function getArtisteById($idArtiste) {
+        $stmt = $this->conn->prepare("SELECT * FROM Artistes WHERE id = :id_artiste");
+        $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function closeConnection() {

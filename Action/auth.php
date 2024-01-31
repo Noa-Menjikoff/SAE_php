@@ -3,24 +3,26 @@ session_start();
 
 if (!defined('BASE_PATH')) {
     define('BASE_PATH', dirname(__FILE__));
-    require_once BASE_PATH . '/../BD/test.php';
+    require_once BASE_PATH . '/../BD/Database.php';
+
 }
 else{
-    require_once BASE_PATH . '/BD/test.php';
+    require_once BASE_PATH . '/BD/Database.php';
 }
 
 if (isset($_POST['login'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
-    $db = new Database(); 
+    $dbPath = '../BD/sae.sqlite3'; 
+    $db = new Database($dbPath);
 
     $user = $db->getUserParNomUtilisateur($username);
 
     if ($user && password_verify($password, $user['password'])) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user'] = $user;
-        if ($user['username'] === 'admin') {
+        if ($user['username'] === 'adm') {
             $_SESSION['adm'] = TRUE;
         }
         header("Location: ../accueil.php?registration_success=1");
@@ -36,7 +38,8 @@ if (isset($_POST['login'])) {
 
     $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
-    $db = new Database(); 
+    $dbPath = '../BD/sae.sqlite3'; 
+    $db = new Database($dbPath);
 
     $success = $db->enregistrerUtilisateur($username, $hashedPassword);
 
