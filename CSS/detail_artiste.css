@@ -32,16 +32,31 @@
     margin-bottom: 10px;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width: 20vw;
+    width: 10vw;
     height: 25vh;
     margin: 20px;
     display: flex;
-    justify-content: center;
-    align-items: center;
     flex-direction: column;
+    color: white;
+    background-color: #494949;
 }
+
+.album:hover{
+    background-color: #585858;
+    transition: all 0.4s;
+}
+
+.album img{
+    border-radius: 5px;
+    margin: 5px;
+}
+
+
 
 .albums a{
     text-decoration: none;
     color: black;
+}
+.infos {
+    text-align: left;
 }

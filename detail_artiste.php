@@ -43,15 +43,32 @@ $albums = $db->getAlbumsByArtistId($id);
 <div class="albums">
     
     <?php  
-        foreach($albums as $album){
-            echo '<a href="detail_album.php?id='.$album["id"].'">';
-            echo '<div class="album">';
-            echo '<h2>' . $album['nom'] . '</h2>';
-            echo '<p>Date: ' . $album['date_sortie'] . '</p>';
-            echo '<p>Description: ' . $album['description'] . '</p>';
-            echo '</div>';
-            echo '</a>';
-        }
+    
+            for ($i = 1; $i <= min(6, count($albums)); $i++) {
+                echo '<a href="detail_album.php?id='.$albums[$i-1]["id"].'">';            
+    
+                
+                echo '<div class="album">';
+                if ($albums[$i-1]['img']===NULL){
+                    echo '<img src="IMG/default.png" alt="user">';
+                }   
+                else{
+                    $imageData = $albums[$i-1]['img'];
+                    echo '<img src="data:image;base64,' . $imageData . '" alt="user">';
+                }
+                echo '<div class="infos">';
+                    echo '<h3 class="album-nom">' . substr($albums[$i-1]['nom'], 0, 15);
+                    if (strlen($albums[$i-1]['nom']) > 15) {
+                        echo '...';
+                    }
+                    echo '</h3>';
+                    echo '<p>Date: ' . $albums[$i-1]['date_sortie'] . '</p>';
+                echo '</div>';
+                echo '</div>';
+                echo '</a>';
+            }
+        
+
     ?>
 
 </div>
