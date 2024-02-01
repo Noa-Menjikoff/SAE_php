@@ -4,6 +4,8 @@
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
+    max-height: 90%; /* ajustez la hauteur maximale selon vos besoins */
+    overflow-y: auto;
 }
 
 .titre-page{
@@ -33,7 +35,7 @@
 .artiste img{
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: 1;
     object-fit: cover;
     border-radius: 10px;
     position: absolute;
