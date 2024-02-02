@@ -40,7 +40,14 @@
     color: white;
     background-color: #494949;
 }
-
+main{
+    width: 80vw;
+    margin-left: 18vw;
+    background-color: #181818;
+    margin-top: 10px;
+    border-radius: 8px;
+    min-height: 98vh;
+}
 .album:hover{
     background-color: #585858;
     transition: all 0.4s;

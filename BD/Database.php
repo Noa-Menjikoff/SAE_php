@@ -120,6 +120,14 @@ class Database {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+
+    public function getChansonsAlbum($idAlbum) {
+        $stmt = $this->conn->prepare("SELECT * FROM Chansons WHERE album_id = :idAlbum");
+        $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function getAlbumsByArtistId($idArtiste) {
         $stmt = $this->conn->prepare("SELECT * FROM Albums WHERE artiste_id = :artiste_id");
         $stmt->bindParam(':artiste_id', $idArtiste, PDO::PARAM_INT);

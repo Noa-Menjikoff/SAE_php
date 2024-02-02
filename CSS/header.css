@@ -3,18 +3,12 @@ body{
     color: white;
     display: flex;
 }
-main{
-    width: 80vw;
-    margin-left: 17vw;
-    background-color: #181818;
-    border-radius: 10px;
-    margin-top: 10px;
-    height: 98vh;
-}
+
 
 nav ul{
     list-style: none;
     padding: 0;
+    margin-left: 10px;
 }
 
 header{
@@ -30,9 +24,11 @@ nav,.bibli{
 
 nav{
     height:33vh ;
+    box-shadow: 2px 5px 5px 5px #0ff;
 }
 .bibli{
     height: 63vh;
+    box-shadow: 2px 5px 5px 5px #0ff;
 }
 
 nav ul li{

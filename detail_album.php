@@ -2,7 +2,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/detail_artiste.css">
+    <link rel="stylesheet" href="CSS/detail_album.css">
     <link rel="stylesheet" href="CSS/police.css">
     <link rel="stylesheet" href="CSS/header.css" />
     <title>Document</title>
@@ -16,12 +16,13 @@ $db = new Database($dbPath);
 require 'header.php';
 
 $album = $db->getAlbumById($id);
+$chansons = $db->getChansonsAlbum($id);
 
 ?>
 
 <main>
-<div class="contenu-detail-artiste">
-      <div class="image-artiste">
+<div class="contenu-detail-album">
+      <div class="image-album">
         <?php   
             if ($album['img']===NULL){
                 echo '<img src="IMG/default.png" alt="user">';
@@ -34,8 +35,17 @@ $album = $db->getAlbumById($id);
       </div>
       <div class="texte-artiste">
         <h1><?php echo $album['nom']; ?></h1>
-        <p class="description-artiste">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores, non explicabo. Recusandae fugiat eaque excepturi, aliquid enim repellat! Quaerat ipsum eius consequatur fuga illum tempore nobis vel tempora delectus nostrum?</p>
-
+      </div>
+      <div class="chansons">
+        <?php
+            foreach ($chansons as $chanson) {
+                echo '<div class="chanson">';
+                echo '<p>'.$chanson['id'].'</p>';
+                echo '<p>'.$chanson['nom'].'</p>';
+                echo '<p>'.$chanson['duree'].' min</p>';
+                echo '</div>';
+            }
+        ?>
       </div>
 </div>
 

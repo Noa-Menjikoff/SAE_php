@@ -36,8 +36,13 @@ $artistes = $db->getArtistes();
                     }
                 ?>
                 <div class="contenu">
-                    <a href="detail_artiste.php?id=<?php echo $artiste['id']; ?>"><h3 class="test-arrow"><span><?php echo $artiste['prenom']; ?></span></h3></a>
-                    <p><?php echo $artiste['prenom']; ?></p>
+                    
+                    <?php 
+                    echo '<a href="detail_artiste.php?id='.$artiste['id'].'";>'.substr($artiste['prenom'], 0, 15).'</a>' ;
+                    if (strlen($artiste['prenom']) > 15) {
+                        echo '...';
+                    }
+                    ?>
                 </div>
             </div>
         <?php } ?>

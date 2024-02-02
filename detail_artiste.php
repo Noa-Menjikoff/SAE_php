@@ -44,7 +44,7 @@ $albums = $db->getAlbumsByArtistId($id);
     
     <?php  
     
-            for ($i = 1; $i <= min(6, count($albums)); $i++) {
+            for ($i = 1; $i <= min(4, count($albums)); $i++) {
                 echo '<a href="detail_album.php?id='.$albums[$i-1]["id"].'">';            
     
                 

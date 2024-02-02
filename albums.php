@@ -1,7 +1,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/artistes.css">
+    <link rel="stylesheet" href="CSS/album.css">
     <link rel="stylesheet" href="CSS/police.css">
     <link rel="stylesheet" href="CSS/header.css" />
     <title>Document</title>
@@ -19,9 +19,9 @@ $albums = $db->getAlbums();
 
 <main>
       <h2 class="titre-page">Découvrez tout les artistes</h2>
-      <div class="liste-artiste">
+      <div class="liste-album">
       <?php foreach ($albums as $album) { ?>
-            <div class="artiste">
+            <div class="album">
             <?php             
                 if ($album['img']===NULL){
                     echo '<img src="IMG/default.png" alt="user">';
@@ -32,8 +32,12 @@ $albums = $db->getAlbums();
                 }
             ?>
               <div class="contenu">
-                <a href="detail_album.php?id=<?php echo $album['id']; ?>"><h3 class="test-arrow"><span><?php echo $album['nom']; ?></span></h3></a>
-                <p><?php echo $album['nom']; ?></p>
+              <?php 
+                    echo '<a href="detail_album.php?id='.$album['id'].'";>'.substr($album['nom'], 0, 15).'</a>' ;
+                    if (strlen($album['prenom']) > 15) {
+                        echo '...';
+                    }
+                ?>
               </div>
             </div>
             <?php } ?>
