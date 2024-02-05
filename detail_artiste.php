@@ -50,12 +50,18 @@ $chansonsArtiste = $db->getChansonsArtiste($id);
                     echo '</form>';
                 }
             ?>
-            <?php 
+
+        </div>
+        <div class="chansons">
+        <?php 
                 foreach ($chansonsArtiste as $chanson) {
-                    echo $chanson['nom'] . '<br>';
-                    
+                    echo '<div class="chanson">';
+                    echo '<p>'.$chanson['id'].'</p>';
+                    echo '<p>'.$chanson['nom'].'</p>';
+                    echo '<p>'.$chanson['duree'].' min</p>';
+                    echo '</div>';
                 }
-            ?>
+        ?>
         </div>
 </div>
 <h1>Les albums</h1>

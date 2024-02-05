@@ -78,3 +78,16 @@ main{
 .infos {
     text-align: left;
 }
+
+.chanson{
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    width: 30%;
+    margin: 10px;
+}
+
+.chansons{
+    display: flex;
+    flex-direction: column;
+}
