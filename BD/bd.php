@@ -7,6 +7,7 @@ try {
     // le fichier de BD s'appellera questions.sqlite3
     $file_db = new PDO('sqlite:BD/sae.sqlite3');
     $file_db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
+    $file_db->exec("DROP TABLE IF EXISTS Abonnements");
     $file_db->exec("DROP TABLE IF EXISTS Commentaires");
     $file_db->exec("DROP TABLE IF EXISTS Notes");
     $file_db->exec("DROP TABLE IF EXISTS PlaylistChansons");
@@ -104,6 +105,14 @@ try {
         chanson_id INT NOT NULL,
         FOREIGN KEY (utilisateur_id) REFERENCES Utilisateurs(id),
         FOREIGN KEY (chanson_id) REFERENCES Chansons(id)
+    )");
+
+    $file_db->exec("CREATE TABLE Abonnements (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        utilisateur_id INT NOT NULL,
+        artiste_id INT NOT NULL,
+        FOREIGN KEY (utilisateur_id) REFERENCES Utilisateurs(id),
+        FOREIGN KEY (artiste_id) REFERENCES Artistes(id)
     )");
 
 

@@ -135,8 +135,56 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function ajouterAbonnement($idUtilisateur, $idArtiste) {
+        $sql = "INSERT INTO Abonnements (utilisateur_id, artiste_id) VALUES (:id_utilisateur, :id_artiste)";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+            $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de l'abonnement : " . $e->getMessage();
+        }
+    }
+
+    public function estAbonne($idUtilisateur, $idArtiste) {
+        $sql = "SELECT COUNT(*) AS count FROM Abonnements WHERE utilisateur_id = :id_utilisateur AND artiste_id = :id_artiste";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+            $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return ($result['count'] > 0);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la vérification de l'abonnement : " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function enleverAbonnement($idUtilisateur, $idArtiste){
+        $sql = "DELETE FROM Abonnements WHERE utilisateur_id = :id_utilisateur AND artiste_id = :id_artiste";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+            $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de la suppression de l'abonnement : " . $e->getMessage();
+        }
+    }
+
     public function closeConnection() {
         $this->conn = null;
     }
+
+
+
 }
 ?>

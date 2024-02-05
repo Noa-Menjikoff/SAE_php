@@ -61,6 +61,11 @@
         "label": "Un debile + Un homme = ? ",
         "correct": "Theo"
       }
+      {
+		  "id":5,
+		  "type":"text",
+		  "label":"cc"
+		  "correct":"HUGO SAINSON"
     ]
   }
     

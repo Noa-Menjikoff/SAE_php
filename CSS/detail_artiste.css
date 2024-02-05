@@ -1,22 +1,18 @@
 
-.contenu-detail-artiste{
-    display: flex;
-    justify-content: space-between;
-    margin: 0 10%;
-    flex-direction: row-reverse;
+
+.image-artiste {
+    height: 40%;
+    overflow: hidden;
+    height: 30vh;
 }
 
-.contenu-detail-artiste:not(:first-child){
-    align-items: center;
+.image-artiste img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
 }
 
-.description-artiste{
-    width: 70%;
-}
 
-.image-artiste > img{
-    width: 30vw;
-}
 
 
 .albums{

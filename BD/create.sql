@@ -83,3 +83,8 @@ CREATE TABLE Commentaires (
     FOREIGN KEY (utilisateur_id) REFERENCES Utilisateurs(id),
     FOREIGN KEY (chanson_id) REFERENCES Chansons(id)
 );
+
+CREATE TABLE NOA( 
+num INT AUTO_INCREMENT PRIMARY KEY,
+ferme_ta_session VARCHAR2 NOT NULL,
+);

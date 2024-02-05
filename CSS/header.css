@@ -24,11 +24,9 @@ nav,.bibli{
 
 nav{
     height:33vh ;
-    box-shadow: 2px 5px 5px 5px #0ff;
 }
 .bibli{
     height: 63vh;
-    box-shadow: 2px 5px 5px 5px #0ff;
 }
 
 nav ul li{

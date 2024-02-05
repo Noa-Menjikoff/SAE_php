@@ -17,6 +17,7 @@ require 'header.php';
 
 $artiste = $db->getArtisteById($id);
 $albums = $db->getAlbumsByArtistId($id);
+$estAbonne = $db->estAbonne($_SESSION['user_id'], $id);
 ?>
 
 <main>
@@ -33,10 +34,22 @@ $albums = $db->getAlbumsByArtistId($id);
         ?>
       </div>
       <div class="texte-artiste">
-        <h1><?php echo $artiste['prenom']; ?></h1>
-        <p class="description-artiste">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolores, non explicabo. Recusandae fugiat eaque excepturi, aliquid enim repellat! Quaerat ipsum eius consequatur fuga illum tempore nobis vel tempora delectus nostrum?</p>
-
-      </div>
+            <h1><?php echo $artiste['prenom']; ?></h1>
+            <?php
+                if (!$estAbonne){
+                    echo'<form action="Action/abonner_artiste.php" method="post">';
+                    echo '<input type="hidden" name="id_artiste" value="'. $id. '">';
+                    echo '<input type="submit" value="S abonner">';
+                    echo '</form>';
+                }
+                else{
+                    echo'<form action="Action/desabonner_artiste.php" method="post">';
+                    echo '<input type="hidden" name="id_artiste" value="'. $id. '">';
+                    echo '<input type="submit" value="Désabonner">';
+                    echo '</form>';
+                }
+            ?>
+        </div>
 </div>
 <h1>Les albums</h1>
 
