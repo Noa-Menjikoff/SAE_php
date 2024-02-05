@@ -9,10 +9,3 @@ body{
     padding: 0;
 }
 
-main{
-    width: 80vw;
-    margin-left: 18vw;
-    background-color: #181818;
-    margin-top: 10px;
-    min-height: 98vh;
-}
