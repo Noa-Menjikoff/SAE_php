@@ -16,7 +16,7 @@ $db = new Database($dbPath);
 require 'header.php';
 
 ?>
-
+<main>
 <form action="Action/upload.php" method="post" enctype="multipart/form-data">
         <label for="image">Sélectionnez une image :</label>
         <input type="file" name="image" id="image" accept="image/*">
@@ -24,3 +24,5 @@ require 'header.php';
         <input type="hidden" name="table" value="Utilisateurs">
         <input type="submit" value="Uploader l'image" name="submit">
 </form>
+
+</main>
