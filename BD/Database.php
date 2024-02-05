@@ -180,6 +180,16 @@ class Database {
         }
     }
 
+    public function getChansonsArtiste($idArtiste) {
+        $stmt = $this->conn->prepare("SELECT Chansons.* FROM Chansons
+            INNER JOIN Albums ON Chansons.album_id = Albums.id
+            WHERE Albums.artiste_id = :idArtiste");
+        $stmt->bindParam(':idArtiste', $idArtiste, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+
     public function closeConnection() {
         $this->conn = null;
     }

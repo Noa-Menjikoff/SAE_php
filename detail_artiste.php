@@ -18,6 +18,7 @@ require 'header.php';
 $artiste = $db->getArtisteById($id);
 $albums = $db->getAlbumsByArtistId($id);
 $estAbonne = $db->estAbonne($_SESSION['user_id'], $id);
+$chansonsArtiste = $db->getChansonsArtiste($id);
 ?>
 
 <main>
@@ -47,6 +48,12 @@ $estAbonne = $db->estAbonne($_SESSION['user_id'], $id);
                     echo '<input type="hidden" name="id_artiste" value="'. $id. '">';
                     echo '<input type="submit" value="Désabonner">';
                     echo '</form>';
+                }
+            ?>
+            <?php 
+                foreach ($chansonsArtiste as $chanson) {
+                    echo $chanson['nom'] . '<br>';
+                    
                 }
             ?>
         </div>
