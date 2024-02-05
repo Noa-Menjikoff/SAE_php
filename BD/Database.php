@@ -109,10 +109,18 @@ class Database {
     }
 
     public function deleteArtiste($idArtiste) {
-        $stmt = $this->conn->prepare("DELETE FROM Artistes WHERE id = :id_artiste");
-        $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
-        return $stmt->execute();
+        $sql = "DELETE FROM Artistes WHERE id = :id_artiste";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de la suppression de l'artiste : " . $e->getMessage();
+        }
     }
+
     public function getArtisteById($idArtiste) {
         $stmt = $this->conn->prepare("SELECT * FROM Artistes WHERE id = :id_artiste");
         $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
