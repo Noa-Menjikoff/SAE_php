@@ -109,10 +109,18 @@ class Database {
     }
 
     public function deleteArtiste($idArtiste) {
-        $stmt = $this->conn->prepare("DELETE FROM Artistes WHERE id = :id_artiste");
-        $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
-        return $stmt->execute();
+        $sql = "DELETE FROM Artistes WHERE id = :id_artiste";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de la suppression de l'artiste : " . $e->getMessage();
+        }
     }
+
     public function getArtisteById($idArtiste) {
         $stmt = $this->conn->prepare("SELECT * FROM Artistes WHERE id = :id_artiste");
         $stmt->bindParam(':id_artiste', $idArtiste, PDO::PARAM_INT);
@@ -133,6 +141,42 @@ class Database {
         $stmt->bindParam(':artiste_id', $idArtiste, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function deleteAlbum($idAlbum) {
+        $this->conn->beginTransaction();
+    
+        try {
+            // Supprime les chansons liées à l'album
+            $this->deleteSongsByAlbumId($idAlbum);
+    
+            // Supprime l'album
+            $sql = "DELETE FROM Albums WHERE id = :id_album";
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_album', $idAlbum, PDO::PARAM_INT);
+            $stmt->execute();
+    
+            $this->conn->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->conn->rollBack();
+            echo "Erreur lors de la suppression de l'album : " . $e->getMessage();
+            return false;
+        }
+    }
+    
+    public function deleteSongsByAlbumId($idAlbum) {
+        $sql = "DELETE FROM Chansons WHERE album_id = :id_album";
+    
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_album', $idAlbum, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de la suppression des chansons de l'album : " . $e->getMessage();
+            return false;
+        }
     }
 
     public function ajouterAbonnement($idUtilisateur, $idArtiste) {
