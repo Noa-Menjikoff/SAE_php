@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         // Gestion de l'ajout de la photo (exemple simple, à adapter selon vos besoins)
         $photo = null;
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
-            $photo = file_get_contents($_FILES['photo']['tmp_name']);
+            $photo = base64_encode(file_get_contents($_FILES['photo']['tmp_name']));
         }
 
         // Appel de la fonction pour ajouter l'artiste
