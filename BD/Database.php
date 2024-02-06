@@ -89,6 +89,23 @@ class Database {
         }
     }
 
+    public function ajouterArtiste($prenom, $description, $photo)
+    {
+        $sql = "INSERT INTO Artistes (prenom, description, photo) VALUES (:prenom, :description, :photo)";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':photo', $photo, PDO::PARAM_LOB);
+            $stmt->execute();
+            return $this->conn->lastInsertId();
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de l'artiste : " . $e->getMessage();
+            return false;
+        }
+    }
+
     public function getArtistes() {
         $stmt = $this->conn->prepare("SELECT * FROM Artistes");
         $stmt->execute();

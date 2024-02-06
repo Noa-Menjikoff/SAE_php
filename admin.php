@@ -1,6 +1,4 @@
-<?php
 
-?>
 
 <head>
     <meta charset="UTF-8">
@@ -36,7 +34,7 @@ $albums = $db->getAlbums();
     <h1>Les Artistes</h1>
 
     <div class="container">
-        <button class="btn-delete">Ajouter un artiste</button>
+        <button class="btn-delete" onclick="window.location.href='ajouter_artiste.php'">Ajouter un artiste</button>
         <?php foreach ($artistes as $artiste) { ?>
             <form class="card" action="admin.php" method="post">
                 <span class="artiste-name"><?php echo $artiste['prenom']; ?></span>
