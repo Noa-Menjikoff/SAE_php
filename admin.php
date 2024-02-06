@@ -21,6 +21,10 @@ if($_SERVER['REQUEST_METHOD']=== "POST"){
         $artiste_id = $_POST['artiste_id'];
         $db-> deleteArtiste($artiste_id);
     }
+    if (isset($_POST['supprimer_album'])) {
+        $album_id = $_POST['album_id'];
+        $db-> deleteAlbum($album_id);
+    }
 }
 require 'header.php';
 
@@ -49,11 +53,12 @@ $albums = $db->getAlbums();
     <div class="container">
         <button class="btn-delete" onclick="">Ajouter un Album</button>
         <?php foreach ($albums as $album) { ?>
-            <div class="card">
+            <form class="card" action="admin.php" method="post">
                 <span class="album-name"><?php echo $album['nom']; ?></span>
                 <button class="btn-modify" onclick="window.location.href='modifier_album.php?id=<?php echo $album['id']; ?>'">Modifier</button>
-                <button class="btn-delete" onclick="">Supprimer</button>
-            </div>
+                <input type="hidden" name="album_id" value="<?php echo $album['id']; ?>">
+                <button type="submit" class="btn-delete" name="supprimer_album">Supprimer</button>
+            </form>
         <?php } ?>
     </div>
 </main>
