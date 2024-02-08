@@ -8,6 +8,9 @@
 </head>
 <?php 
 require_once 'BD/Database.php';
+require "Classes/autoloader.php";
+
+autoloader::register();
 
 $dbPath ='BD/sae.sqlite3'; 
 $db = new Database($dbPath);
@@ -20,27 +23,10 @@ $albums = $db->getAlbums();
 <main>
       <h2 class="titre-page">Découvrez tout les artistes</h2>
       <div class="liste-album">
-      <?php foreach ($albums as $album) { ?>
-            <div class="album">
-            <?php             
-                if ($album['img']===NULL){
-                    echo '<img src="IMG/default.png" alt="user">';
-                }   
-                else{
-                    $imageData = $album['img'];
-                    echo '<img src="data:image;base64,' . $imageData . '" alt="user">';
-                }
-            ?>
-              <div class="contenu">
-              <?php 
-                    echo '<a href="detail_album.php?id='.$album['id'].'";>'.substr($album['nom'], 0, 15).'</a>' ;
-                    if (strlen($album['prenom']) > 15) {
-                        echo '...';
-                    }
-                ?>
-              </div>
-            </div>
-            <?php } ?>
+      <?php foreach ($albums as $album) {
+        $albumC = new Album($album["id"], $album["nom"], $album["date_sortie"], $album["description"], $album["artiste_id"], $album["img"]);
+        $albumC->afficherAlbum();
+        } ?>
       </div>
 </main>
 
