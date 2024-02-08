@@ -15,7 +15,6 @@ class Database {
         try {
             $this->conn = new PDO('sqlite:' . $this->dbPath);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            // echo "Connected to the database successfully.<br>";
         } catch (PDOException $e) {
             echo "Erreur de connexion à la base de données : " . $e->getMessage();
         }
@@ -54,7 +53,7 @@ class Database {
 
         try {
             $stmt = $this->conn->prepare($sql);
-            $stmt->bindParam(':imageData', $imageData, PDO::PARAM_LOB); // Assuming BLOB data type
+            $stmt->bindParam(':imageData', $imageData, PDO::PARAM_LOB);
             $stmt->bindParam(':id', $id, PDO::PARAM_STR);
             $stmt->execute();
             return $stmt->rowCount();
@@ -89,6 +88,14 @@ class Database {
         }
     }
 
+
+
+    public function getArtistes() {
+        $stmt = $this->conn->prepare("SELECT * FROM Artistes");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public function ajouterArtiste($prenom, $description, $photo)
     {
         $sql = "INSERT INTO Artistes (prenom, description, photo) VALUES (:prenom, :description, :photo)";
@@ -106,11 +113,23 @@ class Database {
         }
     }
 
-    public function getArtistes() {
-        $stmt = $this->conn->prepare("SELECT * FROM Artistes");
-        $stmt->execute();
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    public function modifierArtiste($id, $prenom, $description, $photo){
+        $sql = "UPDATE Artistes SET prenom = :prenom, description = :description, photo = :photo WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':prenom', $prenom, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':photo', $photo, PDO::PARAM_LOB);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la modification de l'artiste : " . $e->getMessage();
+            return false;
+        }
     }
+
 
     public function getAlbums() {
         $stmt = $this->conn->prepare("SELECT * FROM Albums");
@@ -118,11 +137,65 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function ajouterAlbum($nom, $dateSortie, $description, $artisteId, $img){
+        $sql = "INSERT INTO Albums (nom, date_sortie, description, artiste_id, img) VALUES (:nom, :date_sortie, :description, :artiste_id, :img)";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $stmt->bindParam(':date_sortie', $dateSortie, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':artiste_id', $artisteId, PDO::PARAM_INT);
+            $stmt->bindParam(':img', $img, PDO::PARAM_LOB);
+            $stmt->execute();
+            return $this->conn->lastInsertId();
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de l'album : " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function modifierAlbum($id, $nom, $dateSortie, $description, $img){
+        $sql = "UPDATE Albums SET nom = :nom, date_sortie = :date_sortie, description = :description, img = :img WHERE id = :id";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+            $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $stmt->bindParam(':date_sortie', $dateSortie, PDO::PARAM_STR);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':img', $img, PDO::PARAM_LOB);
+            $stmt->execute();
+        } catch (PDOException $e) {
+            echo "Erreur lors de la modification de l'album : " . $e->getMessage();
+        }
+    }
+
+
+
     public function getMusics() {
         $stmt = $this->conn->prepare("SELECT * FROM Chansons");
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function deleteChanson($chansonID)
+{
+    try {
+        $stmt = $this->conn->prepare("DELETE FROM Chansons WHERE id = :chanson_id");
+        $stmt->bindParam(':chanson_id', $chansonID, PDO::PARAM_INT);
+        $stmt->execute();
+
+        // $stmtPlaylistChansons = $this->conn->prepare("DELETE FROM PlaylistChansons WHERE chanson_id = :chanson_id");
+        // $stmtPlaylistChansons->bindParam(':chanson_id', $chansonID, PDO::PARAM_INT);
+        // $stmtPlaylistChansons->execute();
+
+        return true;
+    } catch (PDOException $e) {
+        echo "Erreur lors de la suppression de la chanson : " . $e->getMessage();
+        return false;
+    }
+}
     
     public function getAlbumById($idAlbum) {
         $stmt = $this->conn->prepare("SELECT * FROM Albums WHERE id = :id_album");
@@ -151,13 +224,15 @@ class Database {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
-
-    public function getChansonsAlbum($idAlbum) {
-        $stmt = $this->conn->prepare("SELECT * FROM Chansons WHERE album_id = :idAlbum");
-        $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+    public function getChansonsAlbum($albumId){
+        $sql = "SELECT * FROM Chansons WHERE album_id = :album_id";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':album_id', $albumId, PDO::PARAM_INT);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+
 
     public function getAlbumsByArtistId($idArtiste) {
         $stmt = $this->conn->prepare("SELECT * FROM Albums WHERE artiste_id = :artiste_id");
@@ -170,10 +245,10 @@ class Database {
         $this->conn->beginTransaction();
     
         try {
-            // Supprime les chansons liées à l'album
+            
             $this->deleteSongsByAlbumId($idAlbum);
     
-            // Supprime l'album
+            
             $sql = "DELETE FROM Albums WHERE id = :id_album";
             $stmt = $this->conn->prepare($sql);
             $stmt->bindParam(':id_album', $idAlbum, PDO::PARAM_INT);
@@ -256,6 +331,23 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function ajouterChansonAlbum($nom, $duree, $description, $album_id){
+    $sql = "INSERT INTO Chansons (nom, duree, description, album_id) VALUES (:nom, :duree, :description, :album_id)";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':nom', $nom, PDO::PARAM_STR);
+            $stmt->bindParam(':duree', $duree, PDO::PARAM_INT);
+            $stmt->bindParam(':description', $description, PDO::PARAM_STR);
+            $stmt->bindParam(':album_id', $album_id, PDO::PARAM_INT);
+            $stmt->execute();
+            return $this->conn->lastInsertId();
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la chanson à l'album : " . $e->getMessage();
+            return false;
+        }
+    }
+
     public function searchArtistes($searchText) {
         $query = "SELECT * FROM Artistes WHERE prenom LIKE :searchText";
         $stmt = $this->conn->prepare($query);
@@ -279,6 +371,78 @@ class Database {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getGenres(){
+        $sql = "SELECT * FROM Genres";
+        $stmt = $this->conn->query($sql);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getGenresArtiste($idArtiste){
+        $sql = "SELECT * FROM Genres
+                JOIN Artistes_Genres ON Genres.id = Artistes_Genres.genre_id
+                WHERE Artistes_Genres.artiste_id = :idArtiste";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idArtiste', $idArtiste, PDO::PARAM_INT);
+        $stmt->execute();
+
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+    public function modifierGenresArtiste($artisteId, $genresSelectionnes){
+        try {
+            $stmtDeleteGenres = $this->conn->prepare("DELETE FROM Artistes_Genres WHERE artiste_id = :artiste_id");
+            $stmtDeleteGenres->bindParam(':artiste_id', $artisteId);
+            $stmtDeleteGenres->execute();
+
+            foreach ($genresSelectionnes as $genreId) {
+                $stmtInsertGenre = $this->conn->prepare("INSERT INTO Artistes_Genres (artiste_id, genre_id) VALUES (:artiste_id, :genre_id)");
+                $stmtInsertGenre->bindParam(':artiste_id', $artisteId);
+                $stmtInsertGenre->bindParam(':genre_id', $genreId);
+                $stmtInsertGenre->execute();
+            }
+
+            return true;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la modification des genres de l'artiste : " . $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getGenresAlbum($idAlbum){
+        $sql = "SELECT * FROM Genres
+                JOIN Albums_Genres ON Genres.id = Albums_Genres.genre_id
+                WHERE Albums_Genres.album_id = :idAlbum";
+
+        $stmt = $this->conn->prepare($sql);
+        $stmt->bindParam(':idAlbum', $idAlbum, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_COLUMN);
+    }
+
+
+    public function modifierGenresAlbum($albumId, $genresSelectionnes){
+        try {
+            $stmtDeleteGenres = $this->conn->prepare("DELETE FROM Albums_Genres WHERE album_id = :album_id");
+            $stmtDeleteGenres->bindParam(':album_id', $albumId);
+            $stmtDeleteGenres->execute();
+
+            foreach ($genresSelectionnes as $genreId) {
+                $stmtInsertGenre = $this->conn->prepare("INSERT INTO Albums_Genres (album_id, genre_id) VALUES (:album_id, :genre_id)");
+                $stmtInsertGenre->bindParam(':album_id', $albumId);
+                $stmtInsertGenre->bindParam(':genre_id', $genreId);
+                $stmtInsertGenre->execute();
+            }
+
+            return true;
+        } catch (PDOException $e) {
+            echo "Erreur lors de la modification des genres de l'album : " . $e->getMessage();
+            return false;
+        }
+    }
+
+
 
     public function closeConnection() {
         $this->conn = null;

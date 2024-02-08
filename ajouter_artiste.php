@@ -19,13 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $prenom = $_POST['prenom'];
         $description = $_POST['description'];
 
-        // Gestion de l'ajout de la photo (exemple simple, à adapter selon vos besoins)
         $photo = null;
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
             $photo = base64_encode(file_get_contents($_FILES['photo']['tmp_name']));
         }
 
-        // Appel de la fonction pour ajouter l'artiste
         $db->ajouterArtiste($prenom, $description, $photo);
     }
 }
