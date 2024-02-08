@@ -12,40 +12,26 @@
 
 <?php 
 require_once 'BD/Database.php';
+require "Classes/autoloader.php";
+
+autoloader::register();
 
 $dbPath ='BD/sae.sqlite3'; 
 $db = new Database($dbPath);
 require 'header.php';
 
 $artistes = $db->getArtistes();
+
 ?>
 
 <main>
 
     <h2 class="titre-page">Découvrez tous les artistes</h2>
     <div class="liste-artiste">
-        <?php foreach ($artistes as $artiste) { ?>
-            <div class="artiste">
-                <?php             
-                    if ($artiste['photo']===NULL){
-                        echo '<img src="IMG/default.png" alt="user">';
-                    }   
-                    else{
-                        $imageData = $artiste['photo'];
-                        echo '<img src="data:image;base64,' . $imageData . '" alt="user">';
-                    }
-                ?>
-                <div class="contenu">
-                    
-                    <?php 
-                    echo '<a href="detail_artiste.php?id='.$artiste['id'].'";>'.substr($artiste['prenom'], 0, 15).'</a>' ;
-                    if (strlen($artiste['prenom']) > 15) {
-                        echo '...';
-                    }
-                    ?>
-                </div>
-            </div>
-        <?php } ?>
+        <?php foreach ($artistes as $artiste) {
+            $artiseC = new Artiste($artiste["id"], $artiste["prenom"], $artiste["description"], $artiste["photo"]);
+            $artiseC->afficherArtiste();
+        }?>
     </div>
 </main>
 

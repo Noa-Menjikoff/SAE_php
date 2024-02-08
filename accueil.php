@@ -1,5 +1,8 @@
 <?php
     require_once 'BD/Database.php';
+    require "Classes/autoloader.php";
+
+    autoloader::register();
 
     $dbPath ='BD/sae.sqlite3'; 
     $db = new Database($dbPath);
@@ -52,53 +55,18 @@
             <h2>Découvrez des artistes</h2>
             <div class="grid-container">
 
-                <?php for ($i = 1; $i <= min(6, count($artistes)); $i++) { ?>
-                    <div class="artiste">
-                        <?php             
-                            if ($artistes[$i-1]['photo']===NULL){
-                                echo '<img src="IMG/default.png" alt="user">';
-                            }   
-                            else{
-                                $imageData = $artistes[$i-1]['photo'];
-                                echo '<img src="data:image;base64,' . $imageData . '" alt="user">';
-                            }
-                        ?>
-                        <div class="contenu">
-                            
-                            <?php 
-                            echo '<a href="detail_artiste.php?id='.$artistes[$i-1]['id'].'";>'.substr($artistes[$i-1]['prenom'], 0, 15).'</a>' ;
-                            if (strlen($artistes[$i-1]['prenom']) > 15) {
-                                echo '...';
-                            }
-                            ?>
-                        </div>
-                    </div>
-                <?php } ?>
+                <?php for ($i = 1; $i <= min(6, count($artistes)); $i++) {
+                    $artiseC = new Artiste($artistes[$i-1]["id"], $artistes[$i-1]["prenom"], $artistes[$i-1]["description"], $artistes[$i-1]["photo"]);
+                    $artiseC->afficherArtiste();
+                } ?>
             </div>
 
             <h2>Découvrez des albums</h2>
             <div class="grid-container">
-                <?php for ($i = 1; $i <= min(6, count($albums)); $i++) { ?>
-                    <div class="album">
-                        <?php             
-                            if ($albums[$i-1]['img']===NULL){
-                                echo '<img src="IMG/default.png" alt="user">';
-                            }   
-                            else{
-                                $imageData = $albums[$i-1]['img'];
-                                echo '<img src="data:image;base64,' . $imageData . '" alt="user">';
-                            }
-                        ?>
-                        <div class="contenu">
-                        <?php 
-                                echo '<a href="detail_album.php?id='.$albums[$i-1]['id'].'";>'.substr($albums[$i-1]['nom'], 0, 15).'</a>' ;
-                                if (strlen($albums[$i-1]['prenom']) > 15) {
-                                    echo '...';
-                                }
-                            ?>
-                        </div>
-                    </div>
-                <?php } ?>
+                <?php for ($i = 1; $i <= min(6, count($albums)); $i++) {
+                    $albumC = new Album($albums[$i-1]["id"], $albums[$i-1]["nom"], $albums[$i-1]["date_sortie"], $albums[$i-1]["description"], $albums[$i-1]["artiste_id"], $albums[$i-1]["img"]);
+                    $albumC->afficherAlbum();
+                } ?>
             </div>
             <h2>Découvrez des musiques</h2>
             <div class="grid-container">
