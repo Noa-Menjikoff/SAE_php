@@ -16,7 +16,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = $database->updateArtisteImage($id, $imageData);
     } else if ($table == 'Utilisateurs') {
         $result = $database->updateProfileImage($username, $imageData);
-    } elseif ($table == 'Albums') {
+        $_SESSION['user']['image_profil'] = $imageData;
+    } else if ($table == 'Albums') {
         $id = $_POST['id'];
         $result = $database->updateAlbumImage($id, $imageData);
     }
@@ -24,7 +25,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($result > 0) {
             echo "<script>alert('L\'image a été téléchargée et mise à jour avec succès dans la base de données.');</script>";
-            $_SESSION['user']['image_profil'] = $imageData;
             echo "<script>setTimeout(function(){ window.location.href = '../profil.php'; }, 100);</script>";
         } else {
             echo "<script>alert('Erreur lors de la mise à jour de l\'image dans la base de données.');</script>";
