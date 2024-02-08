@@ -117,6 +117,12 @@ class Database {
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getMusics() {
+        $stmt = $this->conn->prepare("SELECT * FROM Chansons");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
     public function getAlbumById($idAlbum) {
         $stmt = $this->conn->prepare("SELECT * FROM Albums WHERE id = :id_album");
@@ -239,6 +245,39 @@ class Database {
         } catch (PDOException $e) {
             echo "Erreur lors de la suppression de l'abonnement : " . $e->getMessage();
         }
+    }
+
+    public function getChansonsArtiste($idArtiste) {
+        $stmt = $this->conn->prepare("SELECT Chansons.* FROM Chansons
+            INNER JOIN Albums ON Chansons.album_id = Albums.id
+            WHERE Albums.artiste_id = :idArtiste");
+        $stmt->bindParam(':idArtiste', $idArtiste, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function searchArtistes($searchText) {
+        $query = "SELECT * FROM Artistes WHERE prenom LIKE :searchText";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':searchText', '%' . $searchText . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function searchAlbums($searchText) {
+        $query = "SELECT * FROM Albums WHERE nom LIKE :searchText";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':searchText', '%' . $searchText . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function searchChansons($searchText) {
+        $query = "SELECT * FROM Chansons WHERE nom LIKE :searchText";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindValue(':searchText', '%' . $searchText . '%', PDO::PARAM_STR);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public function closeConnection() {

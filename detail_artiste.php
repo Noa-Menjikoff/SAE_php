@@ -18,6 +18,7 @@ require 'header.php';
 $artiste = $db->getArtisteById($id);
 $albums = $db->getAlbumsByArtistId($id);
 $estAbonne = $db->estAbonne($_SESSION['user_id'], $id);
+$chansonsArtiste = $db->getChansonsArtiste($id);
 ?>
 
 <main>
@@ -49,6 +50,18 @@ $estAbonne = $db->estAbonne($_SESSION['user_id'], $id);
                     echo '</form>';
                 }
             ?>
+
+        </div>
+        <div class="chansons">
+        <?php 
+                foreach ($chansonsArtiste as $chanson) {
+                    echo '<div class="chanson">';
+                    echo '<p>'.$chanson['id'].'</p>';
+                    echo '<p>'.$chanson['nom'].'</p>';
+                    echo '<p>'.$chanson['duree'].' min</p>';
+                    echo '</div>';
+                }
+        ?>
         </div>
 </div>
 <h1>Les albums</h1>

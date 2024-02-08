@@ -13,7 +13,22 @@
 }
 
 
+.texte-artiste{
+    display: flex;
+    align-items: center;
+}
 
+.texte-artiste input{
+    margin-left: 50px;
+    padding: 10px;
+    border-radius: 50px;
+    background-color: #181818; 
+    color: white;
+    border: solid 1px white;
+    cursor: pointer;
+    transition: all 0.4s;
+
+}
 
 .albums{
     margin: 0% 10%;
@@ -62,4 +77,17 @@ main{
 }
 .infos {
     text-align: left;
+}
+
+.chanson{
+    display: flex;
+    justify-content: space-around;
+    background-color: #333;
+    width: 30%;
+    margin: 10px;
+}
+
+.chansons{
+    display: flex;
+    flex-direction: column;
 }

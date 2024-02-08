@@ -14,7 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $db->closeConnection();
 
-        echo "Abonnement ajouté avec succès!";
+       header("Location: ../detail_artiste.php?id=$idArtiste");
+        exit();
     } else {
         echo "ID de l'artiste non spécifié!";
     }
