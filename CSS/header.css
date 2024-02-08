@@ -16,17 +16,11 @@ header{
     height: 100vh;
     position: fixed;
 }
-nav,.bibli{
+nav{
     margin: 10px;
     background-color: #181818;
     border-radius: 10px;
-}
-
-nav{
-    height:33vh ;
-}
-.bibli{
-    height: 63vh;
+    height: 98vh;
 }
 
 nav ul li{
