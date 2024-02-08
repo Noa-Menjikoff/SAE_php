@@ -1,6 +1,4 @@
-<?php
 
-?>
 
 <head>
     <meta charset="UTF-8">
@@ -36,14 +34,15 @@ $albums = $db->getAlbums();
     <h1>Les Artistes</h1>
 
     <div class="container">
-        <button class="btn-delete">Ajouter un artiste</button>
+        <button class="btn-delete" onclick="window.location.href='ajouter_artiste.php'">Ajouter un artiste</button>
         <?php foreach ($artistes as $artiste) { ?>
             <form class="card" action="admin.php" method="post">
                 <span class="artiste-name"><?php echo $artiste['prenom']; ?></span>
-                <button class="btn-modify" onclick="window.location.href='modifier_artiste.php?id=<?php echo $artiste['id']; ?>'">Modifier</button>
+                
                 <input type="hidden" name="artiste_id" value="<?php echo $artiste['id']; ?>">
                 <button type="submit" class="btn-delete" name="supprimer_artiste">Supprimer</button>
             </form>
+            <button class="btn-modify" onclick="window.location.href='modifier_artiste.php?id=<?php echo $artiste['id']; ?>'">Modifier</button>
         <?php } ?>
     </div>
 
@@ -55,10 +54,11 @@ $albums = $db->getAlbums();
         <?php foreach ($albums as $album) { ?>
             <form class="card" action="admin.php" method="post">
                 <span class="album-name"><?php echo $album['nom']; ?></span>
-                <button class="btn-modify" onclick="window.location.href='modifier_album.php?id=<?php echo $album['id']; ?>'">Modifier</button>
+                
                 <input type="hidden" name="album_id" value="<?php echo $album['id']; ?>">
                 <button type="submit" class="btn-delete" name="supprimer_album">Supprimer</button>
             </form>
+            <button class="btn-modify" onclick="window.location.href='modifier_album.php?id=<?php echo $album['id']; ?>'">Modifier</button>
         <?php } ?>
     </div>
 </main>
