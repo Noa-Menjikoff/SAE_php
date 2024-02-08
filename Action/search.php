@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['search'])) {
             echo '<div class="contenu">';
             
                     echo '<a href="detail_album.php?id='.$album['id'].'";>'.substr($album['nom'], 0, 15).'</a>' ;
-                    if (strlen($album['prenom']) > 15) {
+                    if (strlen($album['nom']) > 15) {
                         echo '...';
                     }
                 

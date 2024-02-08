@@ -1,5 +1,5 @@
 <?php
-declare(stricttypes=1);
+// declare(stricttypes=1);
 
 class Autoloader {
     static function register() {

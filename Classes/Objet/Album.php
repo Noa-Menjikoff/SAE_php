@@ -56,7 +56,7 @@ class Album {
         
         echo '<a href="detail_album.php?id=' . $this->id . '">' . substr($this->nom, 0, 15) . '</a>';
         
-        if (strlen($album['nom']) > 15) {
+        if (strlen($this->nom) > 15) {
             echo '...';
         }
         
