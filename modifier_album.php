@@ -34,13 +34,26 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $db->modifierGenresAlbum($id, $genresSelectionnes);
     }
 
-    if (isset($_POST['new_chanson_nom'])) {
-        $nom = $_POST['new_chanson_nom'];
-        $duree = $_POST['new_chanson_duree'];
-        $description = $_POST['new_chanson_description'];
-        $album_id = $id; 
+    // if (isset($_POST['new_chanson_nom'])) {
+    //     $nom = $_POST['new_chanson_nom'];
+    //     $duree = $_POST['new_chanson_duree'];
+    //     $description = $_POST['new_chanson_description'];
+    //     $album_id = $id; 
 
-        $db->ajouterChansonAlbum($nom, $duree, $description, $album_id);
+    //     $db->ajouterChansonAlbum($nom, $duree, $description, $album_id);
+    // }
+
+    if (isset($_POST['new_chansons'])) {
+        $chansonsData = $_POST['new_chansons'];
+        // var_dump($chansonsData);
+        foreach ($chansonsData as $chansonData) {
+            var_dump($chansonData["nom"]);
+            // $nomChanson = $chansonData['nom'];
+            // $dureeChanson = $chansonData['duree'];
+            // $descriptionChanson = isset($chansonData['description']) ? $chansonData['description'] : '';
+
+            // $db->ajouterChansonAlbum($nomChanson, $dureeChanson, $descriptionChanson, $id);
+        }
     }
 
     if (isset($_POST['delete_chansons'])) {
@@ -101,9 +114,9 @@ $chansons = $db->getChansonsAlbum($id);
             <div id="chansons-container">
             <?php foreach ($chansons as $chanson) : ?>
                 <div class="chanson-item">
-                    <input type="text" name="chansons[<?php echo $chanson['id']; ?>][nom]" value="<?php echo $chanson['nom']; ?>">
-                    <input type="text" name="chansons[<?php echo $chanson['id']; ?>][duree]" value="<?php echo $chanson['duree']; ?>">
-                    <textarea name="chansons_<?php echo $chanson['id']; ?>" rows="4"> <?php echo $chanson['description']; ?></textarea>
+                    <input type="text" name="chanson[<?php echo $chanson['id']; ?>][nom]" value="<?php echo $chanson['nom']; ?>">
+                    <input type="text" name="chanson[<?php echo $chanson['id']; ?>][duree]" value="<?php echo $chanson['duree']; ?>">
+                    <textarea name="chanson_<?php echo $chanson['id']; ?>" rows="4"> <?php echo $chanson['description']; ?></textarea>
                     <button type="button" class="remove-chanson" data-chanson-id="<?php echo $chanson['id']; ?>">Supprimer</button>
                 </div>
             <?php endforeach; ?>
@@ -116,50 +129,96 @@ $chansons = $db->getChansonsAlbum($id);
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            
-        var toggleButton = document.getElementById('toggleChansonBlock');
+        
+        var chansonsContainer = document.getElementById('chansons-container');
+        // var toggleButton = document.getElementById('toggleChansonBlock');
 
-        toggleButton.addEventListener('click', function () {
-            var existingChansonBlock = document.getElementById('chansonBlock');
+        // toggleButton.addEventListener('click', function () {
+        //     var existingChansonBlock = document.getElementById('chansonBlock');
 
-            if (!existingChansonBlock) {
+        //     if (!existingChansonBlock) {
+        //         var chansonBlock = document.createElement('div');
+        //         chansonBlock.className = 'chanson-item';
+        //         chansonBlock.id = 'chansonBlock';
+
+        //         var inputNom = document.createElement('input');
+        //         inputNom.type = 'text';
+        //         inputNom.name = 'new_chanson_nom';
+        //         inputNom.placeholder = 'Nom de chanson';
+        //         inputNom.required = true;
+
+        //         var inputDuree = document.createElement('input');
+        //         inputDuree.type = 'text';
+        //         inputDuree.name = 'new_chanson_duree';
+        //         inputDuree.placeholder = 'Duree de chanson';
+        //         inputDuree.required = true;
+
+        //         var textareaDescription = document.createElement('textarea');
+        //         textareaDescription.name = 'new_chanson_description';
+        //         textareaDescription.rows = '4';
+        //         textareaDescription.placeholder = 'Description';
+
+        //         chansonBlock.appendChild(inputNom);
+        //         chansonBlock.appendChild(inputDuree);
+        //         chansonBlock.appendChild(textareaDescription);
+
+        //         chansonsContainer = document.getElementById('chansons-container')
+
+        //         chansonsContainer.insertBefore(chansonBlock, chansonsContainer.firstChild);
+
+        //         toggleButton.innerHTML = 'Annuler';
+        //     } else {
+        //         existingChansonBlock.remove();
+
+        //         toggleButton.innerHTML = 'Ajouter une chanson';
+        //     }
+        // });
+
+
+
+        function createChansonBlock() {
                 var chansonBlock = document.createElement('div');
                 chansonBlock.className = 'chanson-item';
-                chansonBlock.id = 'chansonBlock';
 
                 var inputNom = document.createElement('input');
                 inputNom.type = 'text';
-                inputNom.name = 'new_chanson_nom';
+                inputNom.name = 'new_chansons[][nom]';
                 inputNom.placeholder = 'Nom de chanson';
                 inputNom.required = true;
 
                 var inputDuree = document.createElement('input');
                 inputDuree.type = 'text';
-                inputDuree.name = 'new_chanson_duree';
+                inputDuree.name = 'new_chansons[][duree]';
                 inputDuree.placeholder = 'Duree de chanson';
                 inputDuree.required = true;
 
                 var textareaDescription = document.createElement('textarea');
-                textareaDescription.name = 'new_chanson_description';
+                textareaDescription.name = 'new_chansons[][description]';
                 textareaDescription.rows = '4';
                 textareaDescription.placeholder = 'Description';
+
+                var cancelButton = document.createElement('button');
+                cancelButton.type = 'button';
+                cancelButton.className = 'cancel-chanson';
+                cancelButton.innerHTML = 'Annuler';
+                cancelButton.addEventListener('click', function () {
+                    chansonBlock.remove();
+                });
 
                 chansonBlock.appendChild(inputNom);
                 chansonBlock.appendChild(inputDuree);
                 chansonBlock.appendChild(textareaDescription);
+                chansonBlock.appendChild(cancelButton);
 
-                chansonsContainer = document.getElementById('chansons-container')
-
-                chansonsContainer.insertBefore(chansonBlock, chansonsContainer.firstChild);
-
-                toggleButton.innerHTML = 'Annuler';
-            } else {
-                existingChansonBlock.remove();
-
-                toggleButton.innerHTML = 'Ajouter une chanson';
+                return chansonBlock;
             }
-        });
 
+            var toggleButton = document.getElementById('toggleChansonBlock');
+            toggleButton.addEventListener('click', function () {
+                var chansonBlock = createChansonBlock();
+                chansonBlock.id = 'chansonBlock';
+                chansonsContainer.insertBefore(chansonBlock, chansonsContainer.firstChild);
+            });
 
             var removeButtons = document.getElementsByClassName('remove-chanson');
             for (var i = 0; i < removeButtons.length; i++) {
