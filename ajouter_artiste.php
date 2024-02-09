@@ -19,16 +19,21 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $prenom = $_POST['prenom'];
         $description = $_POST['description'];
 
-        // Gestion de l'ajout de la photo (exemple simple, à adapter selon vos besoins)
         $photo = null;
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
             $photo = base64_encode(file_get_contents($_FILES['photo']['tmp_name']));
         }
 
-        // Appel de la fonction pour ajouter l'artiste
-        $db->ajouterArtiste($prenom, $description, $photo);
+        $id = $db->ajouterArtiste($prenom, $description, $photo);
+    }
+
+    if (isset($_POST['genres'])) {
+        $genresSelectionnes = $_POST['genres'];
+        $db->modifierGenresArtiste($id, $genresSelectionnes);
     }
 }
+
+$genres = $db->getGenres();
 
 require 'header.php';
 ?>
@@ -45,6 +50,16 @@ require 'header.php';
 
         <label for="photo">Photo de l'artiste :</label>
         <input type="file" id="photo" name="photo" accept="image/*">
+
+        <fieldset>
+            <legend>Genres :</legend>
+            <?php foreach ($genres as $genre) : ?>
+                <div class="genre-checkbox">
+                    <input type="checkbox" id="genre_<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>">
+                    <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+                </div>
+            <?php endforeach; ?>
+        </fieldset>
 
         <button type="submit" name="ajouter_artiste">Ajouter l'artiste</button>
     </form>

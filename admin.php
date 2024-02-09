@@ -50,7 +50,7 @@ $albums = $db->getAlbums();
 
 
     <div class="container">
-        <button class="btn-delete" onclick="">Ajouter un Album</button>
+        <button class="btn-delete" onclick="window.location.href='ajouter_album.php'">Ajouter un Album</button>
         <?php foreach ($albums as $album) { ?>
             <form class="card" action="admin.php" method="post">
                 <span class="album-name"><?php echo $album['nom']; ?></span>
