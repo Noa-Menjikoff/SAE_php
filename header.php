@@ -37,11 +37,12 @@ echo '<header>';
             }
 
         echo '</ul>';
+        echo '<div class="bibli">';
+        echo '<h2>Bibliothèque</h2>';
+        echo '</div>';
     echo '</nav>';
 
-    echo '<div class="bibli">';
-    echo '<h2>Bibliothèque</h2>';
-    echo '</div>';
+
 
 
 
