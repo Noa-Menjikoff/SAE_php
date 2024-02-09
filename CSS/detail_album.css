@@ -1,5 +1,5 @@
 .image-album {
-    height: 40%;
+    height: 40vh;
     overflow: hidden;
 }
 
@@ -14,6 +14,7 @@ main{
     background-color: #181818;
     margin-top: 10px;
     min-height: 98vh;
+    height: fit-content;
 }
 
 .chanson{
@@ -30,3 +31,16 @@ main{
     flex-direction: column;
     align-items: center;
 }
+
+.playlist-dropdown {
+    display: none;
+  }
+
+
+  .block{
+    display: block;
+  }
+
+  .add-to-playlist-btn{
+    cursor: pointer;
+  }

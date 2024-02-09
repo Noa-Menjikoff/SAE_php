@@ -1,7 +1,7 @@
 
 
 .image-artiste {
-    height: 40%;
+    height: 40vh;
     overflow: hidden;
     height: 30vh;
 }
@@ -58,6 +58,7 @@ main{
     margin-top: 10px;
     border-radius: 8px;
     min-height: 98vh;
+    height: fit-content;
 }
 .album:hover{
     background-color: #585858;
@@ -91,3 +92,19 @@ main{
     display: flex;
     flex-direction: column;
 }
+
+.playlist-dropdown {
+    display: none;
+  }
+
+  .add-to-playlist-btn:hover + .playlist-dropdown {
+    display: block;
+  }
+
+  .block{
+    display: block;
+  }
+
+  .add-to-playlist-btn{
+    cursor: pointer;
+  }

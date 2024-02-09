@@ -53,5 +53,26 @@ header img{
     border-radius: 50%;
 }
 
+.playlists {
+    max-height: 29%;
+    overflow-y: scroll;
+}
 
+.playlists::-webkit-scrollbar {
+    width: 12px; /* Set the width of the scrollbar */
+}
 
+.playlists::-webkit-scrollbar-thumb {
+    background-color: #555; /* Set the color of the scrollbar thumb */
+    border-radius: 6px; /* Set the border radius of the scrollbar thumb */
+}
+
+.playlists::-webkit-scrollbar-track {
+    background-color: #181818; /* Set the color of the scrollbar track */
+    border-radius: 6px; /* Set the border radius of the scrollbar track */
+}
+
+/* Optionally, you can add styles for the scrollbar buttons (arrows) */
+.playlists::-webkit-scrollbar-button {
+    display: none;
+}
