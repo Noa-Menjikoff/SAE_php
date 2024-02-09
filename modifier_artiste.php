@@ -69,6 +69,6 @@ $genresArtiste = $db->getGenresArtiste($id);
             <?php endforeach; ?>
         </fieldset>
 
-        <input type="submit" value="Modifier l'artiste">
+        <input type="submit" value="Sauvegarder les modifications">
     </form>
 </main>

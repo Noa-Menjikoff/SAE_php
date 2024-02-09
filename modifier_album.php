@@ -46,13 +46,17 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if (isset($_POST['new_chansons'])) {
         $chansonsData = $_POST['new_chansons'];
         // var_dump($chansonsData);
+        $cpt = 1;
         foreach ($chansonsData as $chansonData) {
-            var_dump($chansonData["nom"]);
-            // $nomChanson = $chansonData['nom'];
-            // $dureeChanson = $chansonData['duree'];
-            // $descriptionChanson = isset($chansonData['description']) ? $chansonData['description'] : '';
+            // var_dump($chansonData);
+            // var_dump($chansonData['nom']);
+            // var_dump($chansonData['duree']);
+            // var_dump($chansonData['description']);
+            $nomChanson = $chansonData['nom'];
+            $dureeChanson = $chansonData['duree'];
+            $descriptionChanson = isset($chansonData['description']) ? $chansonData['description'] : '';
 
-            // $db->ajouterChansonAlbum($nomChanson, $dureeChanson, $descriptionChanson, $id);
+            $db->ajouterChansonAlbum($nomChanson, $dureeChanson, $descriptionChanson, $id);
         }
     }
 
@@ -131,50 +135,8 @@ $chansons = $db->getChansonsAlbum($id);
         document.addEventListener('DOMContentLoaded', function () {
         
         var chansonsContainer = document.getElementById('chansons-container');
-        // var toggleButton = document.getElementById('toggleChansonBlock');
 
-        // toggleButton.addEventListener('click', function () {
-        //     var existingChansonBlock = document.getElementById('chansonBlock');
-
-        //     if (!existingChansonBlock) {
-        //         var chansonBlock = document.createElement('div');
-        //         chansonBlock.className = 'chanson-item';
-        //         chansonBlock.id = 'chansonBlock';
-
-        //         var inputNom = document.createElement('input');
-        //         inputNom.type = 'text';
-        //         inputNom.name = 'new_chanson_nom';
-        //         inputNom.placeholder = 'Nom de chanson';
-        //         inputNom.required = true;
-
-        //         var inputDuree = document.createElement('input');
-        //         inputDuree.type = 'text';
-        //         inputDuree.name = 'new_chanson_duree';
-        //         inputDuree.placeholder = 'Duree de chanson';
-        //         inputDuree.required = true;
-
-        //         var textareaDescription = document.createElement('textarea');
-        //         textareaDescription.name = 'new_chanson_description';
-        //         textareaDescription.rows = '4';
-        //         textareaDescription.placeholder = 'Description';
-
-        //         chansonBlock.appendChild(inputNom);
-        //         chansonBlock.appendChild(inputDuree);
-        //         chansonBlock.appendChild(textareaDescription);
-
-        //         chansonsContainer = document.getElementById('chansons-container')
-
-        //         chansonsContainer.insertBefore(chansonBlock, chansonsContainer.firstChild);
-
-        //         toggleButton.innerHTML = 'Annuler';
-        //     } else {
-        //         existingChansonBlock.remove();
-
-        //         toggleButton.innerHTML = 'Ajouter une chanson';
-        //     }
-        // });
-
-
+        let cpt = 1
 
         function createChansonBlock() {
                 var chansonBlock = document.createElement('div');
@@ -182,20 +144,22 @@ $chansons = $db->getChansonsAlbum($id);
 
                 var inputNom = document.createElement('input');
                 inputNom.type = 'text';
-                inputNom.name = 'new_chansons[][nom]';
+                inputNom.name = 'new_chansons['+cpt+'][nom]';
                 inputNom.placeholder = 'Nom de chanson';
                 inputNom.required = true;
 
                 var inputDuree = document.createElement('input');
                 inputDuree.type = 'text';
-                inputDuree.name = 'new_chansons[][duree]';
+                inputDuree.name = 'new_chansons['+cpt+'][duree]';
                 inputDuree.placeholder = 'Duree de chanson';
                 inputDuree.required = true;
 
                 var textareaDescription = document.createElement('textarea');
-                textareaDescription.name = 'new_chansons[][description]';
+                textareaDescription.name = 'new_chansons['+cpt+'][description]';
                 textareaDescription.rows = '4';
                 textareaDescription.placeholder = 'Description';
+
+                cpt += 1;
 
                 var cancelButton = document.createElement('button');
                 cancelButton.type = 'button';

@@ -27,12 +27,38 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             $img = base64_encode(file_get_contents($_FILES['image']['tmp_name']));
         }
 
-        $db->ajouterAlbum($nom, $dateSortie, $description, $artisteId, $img);
+        $id = $db->ajouterAlbum($nom, $dateSortie, $description, $artisteId, $img);
     }
+
+    if (isset($_POST['genres'])) {
+        $genresSelectionnes = $_POST['genres'];
+        $db->modifierGenresAlbum($id, $genresSelectionnes);
+    }
+
+
+    if (isset($_POST['new_chansons'])) {
+        $chansonsData = $_POST['new_chansons'];
+        // var_dump($chansonsData);
+        $cpt = 1;
+        foreach ($chansonsData as $chansonData) {
+            // var_dump($chansonData);
+            // var_dump($chansonData['nom']);
+            // var_dump($chansonData['duree']);
+            // var_dump($chansonData['description']);
+            $nomChanson = $chansonData['nom'];
+            $dureeChanson = $chansonData['duree'];
+            $descriptionChanson = isset($chansonData['description']) ? $chansonData['description'] : '';
+
+            $db->ajouterChansonAlbum($nomChanson, $dureeChanson, $descriptionChanson, $id);
+        }
+    }
+
 }
 
 require 'header.php';
 $artistes = $db->getArtistes();
+
+$genres = $db->getGenres();
 ?>
 
 <main>
@@ -58,6 +84,80 @@ $artistes = $db->getArtistes();
         <label for="image">Image de l'Album:</label>
         <input type="file" id="image" name="image" accept="image/*">
 
+        <fieldset>
+            <legend>Genres :</legend>
+            <?php foreach ($genres as $genre) : ?>
+                <div class="genre-checkbox">
+                    <input type="checkbox" id="genre_<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>">
+                    <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+                </div>
+            <?php endforeach; ?>
+        </fieldset>
+
+        <fieldset>
+            <legend>Chansons :</legend>
+            <button type="button" id="toggleChansonBlock">Ajouter une chanson</button>
+            <div id="chansons-container"></div>
+        </fieldset>
+        
+
         <input type="submit" name="ajouter_album" value="Ajouter l'Album">
     </form>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        
+        var chansonsContainer = document.getElementById('chansons-container');
+
+        let cpt = 1
+
+        function createChansonBlock() {
+                var chansonBlock = document.createElement('div');
+                chansonBlock.className = 'chanson-item';
+
+                var inputNom = document.createElement('input');
+                inputNom.type = 'text';
+                inputNom.name = 'new_chansons['+cpt+'][nom]';
+                inputNom.placeholder = 'Nom de chanson';
+                inputNom.required = true;
+
+                var inputDuree = document.createElement('input');
+                inputDuree.type = 'text';
+                inputDuree.name = 'new_chansons['+cpt+'][duree]';
+                inputDuree.placeholder = 'Duree de chanson';
+                inputDuree.required = true;
+
+                var textareaDescription = document.createElement('textarea');
+                textareaDescription.name = 'new_chansons['+cpt+'][description]';
+                textareaDescription.rows = '4';
+                textareaDescription.placeholder = 'Description';
+
+                cpt += 1;
+
+                var cancelButton = document.createElement('button');
+                cancelButton.type = 'button';
+                cancelButton.className = 'cancel-chanson';
+                cancelButton.innerHTML = 'Annuler';
+                cancelButton.addEventListener('click', function () {
+                    chansonBlock.remove();
+                });
+
+                chansonBlock.appendChild(inputNom);
+                chansonBlock.appendChild(inputDuree);
+                chansonBlock.appendChild(textareaDescription);
+                chansonBlock.appendChild(cancelButton);
+
+                return chansonBlock;
+            }
+
+            var toggleButton = document.getElementById('toggleChansonBlock');
+            toggleButton.addEventListener('click', function () {
+                var chansonBlock = createChansonBlock();
+                chansonBlock.id = 'chansonBlock';
+                chansonsContainer.insertBefore(chansonBlock, chansonsContainer.firstChild);
+            });
+
+        });
+    </script>
+
 </main>
