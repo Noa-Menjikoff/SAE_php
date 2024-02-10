@@ -10,6 +10,9 @@
 </head>
 <?php 
 require_once 'BD/Database.php';
+require "Classes/autoloader.php";
+autoloader::register();
+require 'header.php';
 
 $dbPath ='BD/sae.sqlite3'; 
 $db = new Database($dbPath);
@@ -24,42 +27,35 @@ if($_SERVER['REQUEST_METHOD']=== "POST"){
         $db-> deleteAlbum($album_id);
     }
 }
-require 'header.php';
 
 $artistes = $db->getArtistes();
 $albums = $db->getAlbums();
 
 ?>
 <main>
-    <h1>Les Artistes</h1>
+    <h1 class="titre-page">Admin</h1>
 
-    <div class="container">
-        <button class="btn-delete" onclick="window.location.href='ajouter_artiste.php'">Ajouter un artiste</button>
-        <?php foreach ($artistes as $artiste) { ?>
-            <form class="card" action="admin.php" method="post">
-                <span class="artiste-name"><?php echo $artiste['prenom']; ?></span>
-                
-                <input type="hidden" name="artiste_id" value="<?php echo $artiste['id']; ?>">
-                <button type="submit" class="btn-delete" name="supprimer_artiste">Supprimer</button>
-            </form>
-            <button class="btn-modify" onclick="window.location.href='modifier_artiste.php?id=<?php echo $artiste['id']; ?>'">Modifier</button>
-        <?php } ?>
-    </div>
+    <div id="base">
+        <h2>Tous les artistes</h2>
 
-    <h1>Les Albums</h1>
+        <button class="buttonAdd" onclick="window.location.href='ajouter_artiste.php'">Ajouter un artiste</button>
+        <div class="grid-container">
 
+            <?php foreach ($artistes as $artiste) {
+                $artiseC = new Artiste($artiste["id"], $artiste["prenom"], $artiste["description"], $artiste["photo"]);
+                $artiseC->afficherArtisteAdmin();
+            } ?>
+        </div>
 
-    <div class="container">
-        <button class="btn-delete" onclick="window.location.href='ajouter_album.php'">Ajouter un Album</button>
-        <?php foreach ($albums as $album) { ?>
-            <form class="card" action="admin.php" method="post">
-                <span class="album-name"><?php echo $album['nom']; ?></span>
-                
-                <input type="hidden" name="album_id" value="<?php echo $album['id']; ?>">
-                <button type="submit" class="btn-delete" name="supprimer_album">Supprimer</button>
-            </form>
-            <button class="btn-modify" onclick="window.location.href='modifier_album.php?id=<?php echo $album['id']; ?>'">Modifier</button>
-        <?php } ?>
+    <h2>Les Albums</h2>
+
+    <button class="buttonAdd" onclick="window.location.href='ajouter_album.php'">Ajouter un Album</button>
+
+    <div class="grid-container">
+        <?php foreach ($albums as $album) { 
+            $albumC = new Album($album["id"], $album["nom"], $album["date_sortie"], $album["description"], $album["artiste_id"], $album["img"]);
+            $albumC->afficherAlbumAdmin();
+         } ?>
     </div>
 </main>
 

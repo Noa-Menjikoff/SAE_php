@@ -64,6 +64,46 @@ class Album {
         echo '</div>';
     }
 
+    function afficherAlbumAdmin() {
+
+        echo '<form action="admin.php" method="post">';
+            echo '<input type="hidden" name="album_id" value="'.$this->id.'">';
+
+
+            echo '<div class="album">';
+            
+                if ($this->img === NULL) {
+                    echo '<img src="IMG/default.png" alt="user">';
+                } else {
+                    $imageData = $this->img;
+                    echo '<img src="data:image;base64,' . $imageData . '" alt="user">';
+                }
+                
+                echo '<div class="contenu">';
+                
+                    echo '<a href="detail_album.php?id=' . $this->id . '">' . substr($this->nom, 0, 15) . '</a>';
+                    
+                    if (strlen($this->nom) > 15) {
+                        echo '...';
+                    }
+
+                echo '</div>';
+                echo '<div class="bothButtons">';
+
+                    echo '<button type="button" onclick="window.location.href=\'modifier_album.php?id='.$this->id.'\'" class="Button">';
+                            echo '<img class="imgButton" src="IMG/crayon.png" alt="Modifier">';
+                        echo '</button>';
+
+                        echo '<button type="submit" name="supprimer_album" class="Button">';
+                        echo '<img class="imgButton" src="IMG/redCrossV2.png" alt="Supprimer">';
+                        echo '</button>';
+
+                echo '</div>';
+            echo '</div>';
+        echo '</form>';
+        
+    }
+
 
 
 

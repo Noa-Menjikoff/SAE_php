@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="CSS/ajouter.css">
     <link rel="stylesheet" href="CSS/police.css">
     <link rel="stylesheet" href="CSS/header.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <title>Document</title>
 </head>
 
@@ -38,13 +39,8 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     if (isset($_POST['new_chansons'])) {
         $chansonsData = $_POST['new_chansons'];
-        // var_dump($chansonsData);
         $cpt = 1;
         foreach ($chansonsData as $chansonData) {
-            // var_dump($chansonData);
-            // var_dump($chansonData['nom']);
-            // var_dump($chansonData['duree']);
-            // var_dump($chansonData['description']);
             $nomChanson = $chansonData['nom'];
             $dureeChanson = $chansonData['duree'];
             $descriptionChanson = isset($chansonData['description']) ? $chansonData['description'] : '';
@@ -65,34 +61,49 @@ $genres = $db->getGenres();
     <h1>Ajouter un Album</h1>
 
     <form action="ajouter_album.php" method="post" enctype="multipart/form-data">
-        <label for="nom">Nom de l'Album:</label>
-        <input type="text" id="nom" name="nom" required>
-
-        <label for="date_sortie">Date de sortie:</label>
-        <input type="date" id="date_sortie" name="date_sortie" required>
-
-        <label for="description">Description:</label>
-        <textarea id="description" name="description" required></textarea>
-
-        <label for="artiste_id">Artiste:</label>
-        <select id="artiste_id" name="artiste_id" required>
-            <?php foreach ($artistes as $artiste) { ?>
-                <option value="<?php echo $artiste['id']; ?>"><?php echo $artiste['prenom']; ?></option>
-            <?php } ?>
-        </select>
-
-        <label for="image">Image de l'Album:</label>
-        <input type="file" id="image" name="image" accept="image/*">
-
-        <fieldset>
-            <legend>Genres :</legend>
-            <?php foreach ($genres as $genre) : ?>
-                <div class="genre-checkbox">
-                    <input type="checkbox" id="genre_<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>">
-                    <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+        <div class="InfoPersoGenres" >
+            <div class="InfoPerso" >
+                <div id="NameBox">
+                    <label for="nom">Nom de l'Album:</label>
+                    <input type="text" id="nom" name="nom" required>
                 </div>
-            <?php endforeach; ?>
-        </fieldset>
+
+                <div id="DateBox">
+                    <label for="date_sortie">Date de sortie:</label>
+                    <input type="date" id="date_sortie" name="date_sortie" required>
+                </div>
+
+                <div id="DescriptionBox">
+                    <label for="description">Description:</label>
+                    <textarea id="description" name="description" required></textarea>
+                </div>
+
+                <div id="ArtisteBox">
+                    <label for="artiste_id">Artiste:</label>
+                    <select id="artiste_id" name="artiste_id" required>
+                        <?php foreach ($artistes as $artiste) { ?>
+                            <option value="<?php echo $artiste['id']; ?>"><?php echo $artiste['prenom']; ?></option>
+                        <?php } ?>
+                    </select>
+                </div>
+
+                <div id="ImageBox">
+                    <label for="image">Image de l'Album:</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+            </div>
+
+            <fieldset>
+                <legend>Genres :</legend>
+                <ul class="ks-cboxtags">
+                <?php foreach ($genres as $genre) : ?>
+                    <li>
+                        <input type="checkbox" id="checkbox<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>">
+                        <label for="checkbox<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+                    </li>
+                <?php endforeach; ?>
+            </fieldset>
+        </div>
 
         <fieldset>
             <legend>Chansons :</legend>
@@ -101,7 +112,7 @@ $genres = $db->getGenres();
         </fieldset>
         
 
-        <input type="submit" name="ajouter_album" value="Ajouter l'Album">
+        <input class="buttonAdd" type="submit" name="ajouter_album" value="Ajouter l'Album">
     </form>
 
     <script>

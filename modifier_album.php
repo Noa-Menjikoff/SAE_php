@@ -1,9 +1,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/modifier.css">
+    <link rel="stylesheet" href="CSS/ajouter.css">
     <link rel="stylesheet" href="CSS/police.css">
     <link rel="stylesheet" href="CSS/header.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <title>Modifier un Album</title>
 </head>
 <?php
@@ -34,24 +35,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $db->modifierGenresAlbum($id, $genresSelectionnes);
     }
 
-    // if (isset($_POST['new_chanson_nom'])) {
-    //     $nom = $_POST['new_chanson_nom'];
-    //     $duree = $_POST['new_chanson_duree'];
-    //     $description = $_POST['new_chanson_description'];
-    //     $album_id = $id; 
-
-    //     $db->ajouterChansonAlbum($nom, $duree, $description, $album_id);
-    // }
 
     if (isset($_POST['new_chansons'])) {
         $chansonsData = $_POST['new_chansons'];
-        // var_dump($chansonsData);
         $cpt = 1;
         foreach ($chansonsData as $chansonData) {
-            // var_dump($chansonData);
-            // var_dump($chansonData['nom']);
-            // var_dump($chansonData['duree']);
-            // var_dump($chansonData['description']);
             $nomChanson = $chansonData['nom'];
             $dureeChanson = $chansonData['duree'];
             $descriptionChanson = isset($chansonData['description']) ? $chansonData['description'] : '';
@@ -85,49 +73,57 @@ $chansons = $db->getChansonsAlbum($id);
         </div>
     </div>
     <form action="modifier_album.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
-        <label for="nom">Nom de l'album :</label>
-        <input type="text" id="nom" name="nom" value="<?php echo $album['nom']; ?>" required>
-
-        <label for="date_sortie">Date de sortie :</label>
-        <input type="date" id="date_sortie" name="date_sortie" value="<?php echo $album['date_sortie']; ?>" required>
-
-        <label for="description">Description :</label>
-        <textarea id="description" name="description" rows="4" required><?php echo $album['description']; ?></textarea>
-
-        <label for="image">Image de l'album :</label>
-        <input type="file" id="image" name="image" accept="image/*">
-
-        <fieldset>
-            <legend>Genres :</legend>
-            <?php foreach ($genres as $genre) : ?>
-                <div class="genre-checkbox">
-                    <input type="checkbox" id="genre_<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>" <?php echo (in_array($genre['id'], $genresAlbum)) ? 'checked' : ''; ?>>
-                    <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+        <div class="InfoPersoGenres" >
+            <div class="InfoPerso" >
+                <div id="NameBox">
+                    <label for="nom">Nom de l'album :</label>
+                    <input type="text" id="nom" name="nom" value="<?php echo $album['nom']; ?>" required>
                 </div>
-            <?php endforeach; ?>
-        </fieldset>
+
+                <div id="DateBox">
+                    <label for="date_sortie">Date de sortie :</label>
+                    <input type="date" id="date_sortie" name="date_sortie" value="<?php echo $album['date_sortie']; ?>" required>
+                </div>
+
+                <div id="DescriptionBox">
+                    <label for="description">Description :</label>
+                    <textarea id="description" name="description" rows="4" required><?php echo $album['description']; ?></textarea>
+                </div>
+
+                <div id="ImageBox">
+                    <label for="image">Image de l'album :</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                </div>
+            </div>
+
+            <fieldset>
+                <legend>Genres :</legend>
+                <ul class="ks-cboxtags">
+                <?php foreach ($genres as $genre) : ?>
+                    <li>
+                        <input type="checkbox" id="checkbox<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>" <?php echo (in_array($genre['id'], $genresAlbum)) ? 'checked' : ''; ?>>
+                        <label for="checkbox<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+                    </li>
+                <?php endforeach; ?>
+            </fieldset>
+        </div>
 
         <fieldset>
             <legend>Chansons :</legend>
                 <button type="button" id="toggleChansonBlock">Ajouter une chanson</button>
-                <!-- <div class="chanson-item" id="chansonBlock" style="display: none;">
-                    <input type="text" name="new_chanson_nom" value="" placeholder="Nom de chanson" required>
-                    <input type="text" name="new_chanson_duree" value="" placeholder="Duree de chanson" required>
-                    <textarea name="new_chanson_description" rows="4" placeholder="Description"></textarea>
-                </div> -->
             <div id="chansons-container">
             <?php foreach ($chansons as $chanson) : ?>
                 <div class="chanson-item">
                     <input type="text" name="chanson[<?php echo $chanson['id']; ?>][nom]" value="<?php echo $chanson['nom']; ?>">
                     <input type="text" name="chanson[<?php echo $chanson['id']; ?>][duree]" value="<?php echo $chanson['duree']; ?>">
                     <textarea name="chanson_<?php echo $chanson['id']; ?>" rows="4"> <?php echo $chanson['description']; ?></textarea>
-                    <button type="button" class="remove-chanson" data-chanson-id="<?php echo $chanson['id']; ?>">Supprimer</button>
+                    <button type="button" class="remove-chanson Button" data-chanson-id="<?php echo $chanson['id']; ?>"><img class="imgButton" src="IMG/redCrossV2.png" alt="Supprimer"></button>
                 </div>
             <?php endforeach; ?>
             </div>
         </fieldset>
 
-        <input type="submit" value="Sauvegarder les modifications">
+        <input class="buttonAdd" type="submit" value="Sauvegarder les modifications">
     </form>
 
 
@@ -161,13 +157,21 @@ $chansons = $db->getChansonsAlbum($id);
 
                 cpt += 1;
 
+                
+
                 var cancelButton = document.createElement('button');
                 cancelButton.type = 'button';
-                cancelButton.className = 'cancel-chanson';
-                cancelButton.innerHTML = 'Annuler';
+                cancelButton.className = 'cancel-chanson Button';
                 cancelButton.addEventListener('click', function () {
                     chansonBlock.remove();
                 });
+
+                var imgButtonAnnuler = document.createElement('img');
+                imgButtonAnnuler.className = 'imgButton';
+                imgButtonAnnuler.src = 'IMG/minus.png';
+                imgButtonAnnuler.alt = 'Annuler';
+
+                cancelButton.appendChild(imgButtonAnnuler);
 
                 chansonBlock.appendChild(inputNom);
                 chansonBlock.appendChild(inputDuree);

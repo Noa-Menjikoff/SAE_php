@@ -1,9 +1,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="CSS/modifier.css">
+    <link rel="stylesheet" href="CSS/ajouter.css">
     <link rel="stylesheet" href="CSS/police.css">
     <link rel="stylesheet" href="CSS/header.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <title>Modifier un Artiste</title>
 </head>
 
@@ -50,25 +51,38 @@ $genresArtiste = $db->getGenresArtiste($id);
         </div>
     </div>
     <form action="modifier_artiste.php?id=<?php echo $id; ?>" method="post" enctype="multipart/form-data">
-        <label for="prenom">Prénom de l'artiste :</label>
-        <input type="text" id="prenom" name="prenom" value="<?php echo $artiste['prenom']; ?>" required>
 
-        <label for="description">Description :</label>
-        <textarea id="description" name="description" rows="4" required><?php echo $artiste['description']; ?></textarea>
-
-        <label for="photo">Photo de l'artiste :</label>
-        <input type="file" id="photo" name="photo" accept="image/*">
-
-        <fieldset>
-            <legend>Genres :</legend>
-            <?php foreach ($genres as $genre) : ?>
-                <div class="genre-checkbox">
-                    <input type="checkbox" id="genre_<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>" <?php echo (in_array($genre['id'], $genresArtiste)) ? 'checked' : ''; ?>>
-                    <label for="genre_<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+        <div class="InfoPersoGenres" >
+            <div class="InfoPerso" >
+                <div id="NameBox">
+                    <label for="prenom">Prénom de l'artiste :</label>
+                    <input type="text" id="prenom" name="prenom" value="<?php echo $artiste['prenom']; ?>" required>
                 </div>
-            <?php endforeach; ?>
-        </fieldset>
 
-        <input type="submit" value="Sauvegarder les modifications">
+                <div id="DescriptionBox">
+                    <label for="description">Description :</label>
+                    <textarea id="description" name="description" rows="4" required><?php echo $artiste['description']; ?></textarea>
+                </div>
+
+                <div id="ImageBox">
+                    <label for="photo">Photo de l'artiste :</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                </div>
+            </div>
+
+            <fieldset>
+                <legend>Genres :</legend>
+                <ul class="ks-cboxtags">
+                <?php foreach ($genres as $genre) : ?>
+                    <li>
+                        <input type="checkbox" id="checkbox<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>" <?php echo (in_array($genre['id'], $genresArtiste)) ? 'checked' : ''; ?>>
+                        <label for="checkbox<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+                    </li>
+                <?php endforeach; ?>
+            </fieldset>
+        </div>
+
+
+        <input class="buttonAdd" type="submit" value="Sauvegarder les modifications">
     </form>
 </main>
