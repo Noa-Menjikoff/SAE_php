@@ -9,6 +9,7 @@
     <title>Document</title>
 </head>
 <?php 
+session_start();
 require_once 'BD/Database.php';
 require_once 'Classes/autoloader.php';
 autoloader::register();
@@ -21,7 +22,8 @@ $chansons = $db->getChansonsPlaylist($idPlaylist);
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $idChanson = $_POST['chanson_id'];
     $db->supprimerChansonPlaylist($idPlaylist, $idChanson);
-    header('Location: playlist.php?id='.$idPlaylist);
+    // header('Location: playlist.php?id='.$idPlaylist);
+    header('Location: acceuil.php');
 }
 ?>
 

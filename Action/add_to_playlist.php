@@ -1,4 +1,5 @@
 <?php
+session_start();
 if (isset($_POST['playlist_id'])) {
     $chansonId = $_POST['chanson_id'];
     $albumId = $_POST['album_id'];
@@ -12,7 +13,7 @@ if (isset($_POST['playlist_id'])) {
     $db->ajouterChansonPlaylist($playlistId, $chansonId);
 
     // Redirect back to the album detail page or wherever you want
-    header("Location: http://localhost:5000/detail_album.php?id=" . $albumId);
+    header("Location: localhost:8000/detail_album.php?id=" . $albumId);
     exit();
 }
 ?>

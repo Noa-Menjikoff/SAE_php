@@ -1,6 +1,7 @@
 <?php
 
 // Include the Database.php file
+session_start();
 require_once '../BD/Database.php';
 $dbPath = '../BD/sae.sqlite3'; 
 $db = new Database($dbPath);

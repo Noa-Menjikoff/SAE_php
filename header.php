@@ -1,5 +1,5 @@
 <?php
-// session_start();
+session_start();
 
 require_once 'BD/Database.php';
 $dbPath = 'BD/sae.sqlite3';

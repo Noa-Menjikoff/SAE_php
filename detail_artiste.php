@@ -8,6 +8,7 @@
     <title>Document</title>
 </head>
 <?php 
+session_start();
 require_once 'Classes/autoloader.php';
 autoloader::register();
 require_once 'BD/Database.php';
@@ -27,7 +28,7 @@ else{
 }
 $chansonsArtiste = $db->getChansonsArtiste($id);
 
-session_start();
+
 
 // Initialise audioEnCoursDeLecture à null si elle n'existe pas déjà
 if (!isset($_SESSION['audioEnCoursDeLecture'])) {
