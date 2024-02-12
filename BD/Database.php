@@ -395,6 +395,8 @@ class Database {
             return $stmt->fetchAll(PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
             echo "Erreur lors de la récupération des playlists : " . $e->getMessage();
+        }
+    }
 
     public function getGenres(){
         $sql = "SELECT * FROM Genres";
