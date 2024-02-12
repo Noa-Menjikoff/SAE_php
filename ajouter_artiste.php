@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="CSS/ajouter.css">
     <link rel="stylesheet" href="CSS/police.css">
     <link rel="stylesheet" href="CSS/header.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
     <title>Document</title>
 </head>
 
@@ -19,16 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         $prenom = $_POST['prenom'];
         $description = $_POST['description'];
 
-        // Gestion de l'ajout de la photo (exemple simple, à adapter selon vos besoins)
         $photo = null;
         if (isset($_FILES['photo']) && $_FILES['photo']['error'] === 0) {
             $photo = base64_encode(file_get_contents($_FILES['photo']['tmp_name']));
         }
 
-        // Appel de la fonction pour ajouter l'artiste
-        $db->ajouterArtiste($prenom, $description, $photo);
+        $id = $db->ajouterArtiste($prenom, $description, $photo);
+    }
+
+    if (isset($_POST['genres'])) {
+        $genresSelectionnes = $_POST['genres'];
+        $db->modifierGenresArtiste($id, $genresSelectionnes);
     }
 }
+
+$genres = $db->getGenres();
 
 require 'header.php';
 ?>
@@ -37,15 +43,38 @@ require 'header.php';
     <h1>Ajouter un Artiste</h1>
 
     <form action="ajouter_artiste.php" method="post" enctype="multipart/form-data">
-        <label for="prenom">Prénom de l'artiste :</label>
-        <input type="text" id="prenom" name="prenom" required>
+        <div class="InfoPersoGenres" >
+            <div class="InfoPerso" >
+                <div id="NameBox">
+                    <label for="prenom">Prénom de l'artiste :</label>
+                    <input type="text" id="prenom" name="prenom" required>
+                </div>
 
-        <label for="description">Description :</label>
-        <textarea id="description" name="description" rows="4" required></textarea>
+                <div id="DescriptionBox">
+                    <label for="description">Description :</label>
+                    <textarea id="description" name="description" rows="4" required></textarea>
+                </div>
 
-        <label for="photo">Photo de l'artiste :</label>
-        <input type="file" id="photo" name="photo" accept="image/*">
+                <div id="ImageBox">
+                    <label for="photo">Photo de l'artiste :</label>
+                    <input type="file" id="photo" name="photo" accept="image/*">
+                </div>
 
-        <button type="submit" name="ajouter_artiste">Ajouter l'artiste</button>
+            </div>
+
+            <fieldset>
+                <legend>Genres :</legend>
+                <ul class="ks-cboxtags">
+                <?php foreach ($genres as $genre) : ?>
+                        <li>
+                            <input type="checkbox" id="checkbox<?php echo $genre['id']; ?>" name="genres[]" value="<?php echo $genre['id']; ?>">
+                            <label for="checkbox<?php echo $genre['id']; ?>"><?php echo $genre['nom']; ?></label>
+                        </li>
+                <?php endforeach; ?>
+                </ul>
+            </fieldset>
+        </div>
+
+        <button class="buttonAdd" type="submit" name="ajouter_artiste">Ajouter l'artiste</button>
     </form>
 </main>
