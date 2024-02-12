@@ -1,6 +1,12 @@
 <?php
-// session_start();
+session_start();
 
+require_once 'BD/Database.php';
+$dbPath = 'BD/sae.sqlite3';
+$db = new Database($dbPath);
+if (isset($_SESSION['user'])){
+    $playlist = $db->getPlaylists($_SESSION['user_id']);
+}
 if (isset($_GET['action']) && $_GET['action'] == 'deconnexion') {
     session_unset();
 
@@ -39,6 +45,19 @@ echo '<header>';
         echo '</ul>';
         echo '<div class="bibli">';
         echo '<h2>Bibliothèque</h2>';
+        echo '<form action="Action/creer_playlist.php" method="POST">';
+            echo '<input type="text" name="playlist_name" placeholder="Playlist Name">';
+            echo '<button type="submit">Create Playlist</button>';
+        echo '</form>';
+        if (isset($playlist)){
+            echo '<ul class="playlists">';
+            foreach ($playlist as $p){
+                echo '<li><a href="playlist.php?id='.$p['id'].'">'.$p['nom'].'</a></li>';
+            }
+            echo '</ul>';
+        }
+
+        
         echo '</div>';
     echo '</nav>';
 

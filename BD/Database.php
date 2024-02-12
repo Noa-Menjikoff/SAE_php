@@ -3,7 +3,6 @@
 
 // require_once 'bd.php';
 
-session_start();
 
 class Database {
     private $conn;
@@ -372,6 +371,31 @@ class Database {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+
+    public function ajouterPlaylist($idUtilisateur, $nomPlaylist) {
+        $sql = "INSERT INTO Playlists (utilisateur_id, nom) VALUES (:id_utilisateur, :nom)";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+            $stmt->bindParam(':nom', $nomPlaylist, PDO::PARAM_STR);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la playlist : " . $e->getMessage();
+        }
+    }
+    public function getPlaylists($idUtilisateur) {
+        $sql = "SELECT * FROM Playlists WHERE utilisateur_id = :id_utilisateur";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':id_utilisateur', $idUtilisateur, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération des playlists : " . $e->getMessage();
+
     public function getGenres(){
         $sql = "SELECT * FROM Genres";
         $stmt = $this->conn->query($sql);
@@ -409,6 +433,54 @@ class Database {
             return false;
         }
     }
+
+
+    public function getChansonsPlaylist($playlistId) {
+        $stmt = $this->conn->prepare("SELECT Chansons.* FROM Chansons
+            INNER JOIN PlaylistChansons ON Chansons.id = PlaylistChansons.chanson_id
+            WHERE PlaylistChansons.playlist_id = :playlistId");
+        $stmt->bindParam(':playlistId', $playlistId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function getImageAlbumBySong($songId) {
+        $stmt = $this->conn->prepare("SELECT Albums.image FROM Albums
+            INNER JOIN Chansons ON Chansons.album_id = Albums.id
+            WHERE Chansons.id = :songId");
+        $stmt->bindParam(':songId', $songId, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function ajouterChansonPlaylist($playlistId, $chansonId) {
+        $sql = "INSERT INTO PlaylistChansons (playlist_id, chanson_id) VALUES (:playlistId, :chansonId)";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':playlistId', $playlistId, PDO::PARAM_INT);
+            $stmt->bindParam(':chansonId', $chansonId, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de l'ajout de la chanson à la playlist : " . $e->getMessage();
+        }
+    }
+    
+    public function supprimerChansonPlaylist($idPlaylist, $idChanson) {
+        $sql = "DELETE FROM PlaylistChansons WHERE playlist_id = :idPlaylist AND chanson_id = :idChanson";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':idPlaylist', $idPlaylist, PDO::PARAM_INT);
+            $stmt->bindParam(':idChanson', $idChanson, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->rowCount();
+        } catch (PDOException $e) {
+            echo "Erreur lors de la suppression de la chanson de la playlist : " . $e->getMessage();
+        }
+    }
+    
 
     public function getGenresAlbum($idAlbum){
         $sql = "SELECT * FROM Genres

@@ -1,5 +1,6 @@
 <?php
 // upload.php
+session_start();
 require_once '../BD/Database.php';
 
 // Vérifier si le formulaire a été soumis
