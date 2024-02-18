@@ -92,9 +92,9 @@ try {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         note INT NOT NULL,
         utilisateur_id INT NOT NULL,
-        chanson_id INT NOT NULL,
+        artiste_id INT NOT NULL,
         FOREIGN KEY (utilisateur_id) REFERENCES Utilisateurs(id),
-        FOREIGN KEY (chanson_id) REFERENCES Chansons(id)
+        FOREIGN KEY (artiste_id) REFERENCES Artistes(id)
     )");
 
     $file_db->exec("CREATE TABLE Commentaires (
@@ -187,65 +187,64 @@ function insertDataFromYAML($file_db, $yamlFile)
     echo "Data successfully inserted into the database!";
 }
 
-function insert($file_db){
+// function insert($file_db){
 
-    try {
-        // Insert chansons for all albums
-        $albums = $file_db->query("SELECT id FROM Albums")->fetchAll(PDO::FETCH_ASSOC);
+//     try {
+//         // Insert chansons for all albums
+//         $albums = $file_db->query("SELECT id FROM Albums")->fetchAll(PDO::FETCH_ASSOC);
     
-        foreach ($albums as $album) {
-            $albumID = $album['id'];
+//         foreach ($albums as $album) {
+//             $albumID = $album['id'];
     
-            // Check if there are chansons for the album
-            $stmtCheckChansons = $file_db->prepare("SELECT id FROM Chansons WHERE album_id = :album_id");
-            $stmtCheckChansons->bindParam(':album_id', $albumID);
-            $stmtCheckChansons->execute();
-            $existingChansons = $stmtCheckChansons->fetchAll(PDO::FETCH_ASSOC);
+//             // Check if there are chansons for the album
+//             $stmtCheckChansons = $file_db->prepare("SELECT id FROM Chansons WHERE album_id = :album_id");
+//             $stmtCheckChansons->bindParam(':album_id', $albumID);
+//             $stmtCheckChansons->execute();
+//             $existingChansons = $stmtCheckChansons->fetchAll(PDO::FETCH_ASSOC);
     
-            if (empty($existingChansons)) {
-                // If there are no chansons for the album, insert them
-                $stmtInsertChanson = $file_db->prepare("INSERT INTO Chansons (album_id, nom,duree,son) VALUES (:album_id, :nom,3,:son)");
+//             if (empty($existingChansons)) {
+//                 // If there are no chansons for the album, insert them
+//                 $stmtInsertChanson = $file_db->prepare("INSERT INTO Chansons (album_id, nom,duree,son) VALUES (:album_id, :nom,3,:son)");
     
-                // Insert chanson 1
-                $stmtInsertChanson->bindParam(':album_id', $albumID);
-                $chanson1 = 'Chanson1';
-                $stmtInsertChanson->bindParam(':nom', $chanson1);
-                $chemin = './son/'.$chanson1.'.mp3';
-                $stmtInsertChanson->bindParam(':son', $chemin);
-                $stmtInsertChanson->execute();
+//                 // Insert chanson 1
+//                 $stmtInsertChanson->bindParam(':album_id', $albumID);
+//                 $chanson1 = 'Chanson1';
+//                 $stmtInsertChanson->bindParam(':nom', $chanson1);
+//                 $chemin = './son/'.$chanson1.'.mp3';
+//                 $stmtInsertChanson->bindParam(':son', $chemin);
+//                 $stmtInsertChanson->execute();
     
-                // Insert chanson 2
-                $stmtInsertChanson->bindParam(':album_id', $albumID);
-                $chanson2 = 'Chanson2';
-                $chemin2 = './son/'.$chanson2.'.mp3';
-                $stmtInsertChanson->bindParam(':nom', $chanson2);
-                $stmtInsertChanson->bindParam(':son', $chemin2);
-                $stmtInsertChanson->execute();
+//                 // Insert chanson 2
+//                 $stmtInsertChanson->bindParam(':album_id', $albumID);
+//                 $chanson2 = 'Chanson2';
+//                 $chemin2 = './son/'.$chanson2.'.mp3';
+//                 $stmtInsertChanson->bindParam(':nom', $chanson2);
+//                 $stmtInsertChanson->bindParam(':son', $chemin2);
+//                 $stmtInsertChanson->execute();
     
-                // Insert chanson 3
-                $stmtInsertChanson->bindParam(':album_id', $albumID);
-                $chanson3 = 'Chanson3';
-                $stmtInsertChanson->bindParam(':nom', $chanson3);
-                $stmtInsertChanson->bindParam(':son', $chemin);
-                $stmtInsertChanson->execute();
+//                 // Insert chanson 3
+//                 $stmtInsertChanson->bindParam(':album_id', $albumID);
+//                 $chanson3 = 'Chanson3';
+//                 $stmtInsertChanson->bindParam(':nom', $chanson3);
+//                 $stmtInsertChanson->bindParam(':son', $chemin);
+//                 $stmtInsertChanson->execute();
     
-                // Insert chanson 4
-                $stmtInsertChanson->bindParam(':album_id', $albumID);
-                $chanson4 = 'Chanson4';
-                $stmtInsertChanson->bindParam(':nom', $chanson4);
-                $stmtInsertChanson->bindParam(':son', $chemin);
-                $stmtInsertChanson->execute();
-            }
-        }
+//                 // Insert chanson 4
+//                 $stmtInsertChanson->bindParam(':album_id', $albumID);
+//                 $chanson4 = 'Chanson4';
+//                 $stmtInsertChanson->bindParam(':nom', $chanson4);
+//                 $stmtInsertChanson->bindParam(':son', $chemin);
+//                 $stmtInsertChanson->execute();
+//             }
+//         }
     
-    } catch (PDOException $ex) {
-        echo $ex->getMessage();
-    }
+//     } catch (PDOException $ex) {
+//         echo $ex->getMessage();
+//     }
     
-}
+// }
 
 insertDataFromYAML($file_db, __DIR__ . '/extrait.yml');
-insert($file_db);
 
     // on ferme la connexion
     $file_db = null;

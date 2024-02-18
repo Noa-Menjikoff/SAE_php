@@ -517,6 +517,52 @@ class Database {
     }
 
 
+    public function getNote($utilisateurId, $artisteId) {
+        $sql = "SELECT * FROM Notes WHERE utilisateur_id = :utilisateurId AND artiste_id = :artisteId";
+
+        try {
+            $stmt = $this->conn->prepare($sql);
+            $stmt->bindParam(':utilisateurId', $utilisateurId, PDO::PARAM_INT);
+            $stmt->bindParam(':artisteId', $artisteId, PDO::PARAM_INT);
+            $stmt->execute();
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            echo "Erreur lors de la récupération de la note : " . $e->getMessage();
+        }
+    }
+
+    public function ajouterNote($note, $utilisateurId, $artisteId) {
+        $existingNote = $this->getNote($utilisateurId, $artisteId);
+
+        if ($existingNote) {
+            $sql = "UPDATE Notes SET note = :note WHERE utilisateur_id = :utilisateurId AND artiste_id = :artisteId";
+
+            try {
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(':note', $note, PDO::PARAM_INT);
+                $stmt->bindParam(':utilisateurId', $utilisateurId, PDO::PARAM_INT);
+                $stmt->bindParam(':artisteId', $artisteId, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt->rowCount();
+            } catch (PDOException $e) {
+                echo "Erreur lors de la modification de la note : " . $e->getMessage();
+            }
+        } else {
+            $sql = "INSERT INTO Notes (note, utilisateur_id, artiste_id) VALUES (:note, :utilisateurId, :artisteId)";
+
+            try {
+                $stmt = $this->conn->prepare($sql);
+                $stmt->bindParam(':note', $note, PDO::PARAM_INT);
+                $stmt->bindParam(':utilisateurId', $utilisateurId, PDO::PARAM_INT);
+                $stmt->bindParam(':artisteId', $artisteId, PDO::PARAM_INT);
+                $stmt->execute();
+                return $stmt->rowCount();
+            } catch (PDOException $e) {
+                echo "Erreur lors de l'ajout de la note : " . $e->getMessage();
+            }
+        }
+    }
+    
 
     public function closeConnection() {
         $this->conn = null;

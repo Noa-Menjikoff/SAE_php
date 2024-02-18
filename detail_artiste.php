@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <?php 
-session_start();
+
 require_once 'Classes/autoloader.php';
 autoloader::register();
 require_once 'BD/Database.php';
@@ -66,6 +66,11 @@ if (!isset($_SESSION['audioEnCoursDeLecture'])) {
                     echo '</form>';
                 }
             ?>
+            <form action="Action/note.php" method="POST" >
+                <input type="hidden" name="id_artiste" value="<?php echo $id; ?>">
+                <input type="number" name="note" min="0" max="5">
+                <input type="submit" value="Noter">
+            </form>
 
         </div>
         <div class="chansons">
