@@ -14,7 +14,7 @@
 		<div class="form-container sign-up-container">
 			<form action="Action/auth.php" method="post">
 				<h1>Créer un compte</h1>
-				<span>Crée ton compte en utilisant ton adresse mail</span>
+				<span>Crée ton compte </span>
 				<input name="username" type="text" placeholder="Name" />
 				<input name="password" type="password" placeholder="Password" />
 				<button type="submit" name="register" value="inscription">S'inscrire</button>
@@ -23,7 +23,7 @@
 		<div class="form-container sign-in-container">
 			<form action="Action/auth.php" method="post">
 				<h1>Se connecter</h1>
-				<span>Utilise ton email pour te connecter</span>
+				<span>Utilise ton nom pour te connecter</span>
 				<input name="username" type="text" placeholder="Name" />
 				<input name="password" type="password" placeholder="Password" />
 				<button type="submit" name="login" value="connexion">Se connecter</button>
@@ -38,7 +38,7 @@
 				</div>
 				<div class="overlay-panel overlay-right">
 					<h1 class="titre-gradiant">Salut !</h1>
-					<p>Si tu souhaites acheter des billets, entres tes données personnelles pour t'inscrire !</p>
+					<p>Inscris toi !</p>
 					<button class="ghost" id="signUp">S'inscrire</button>
 				</div>
 			</div>
