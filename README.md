@@ -1,3 +1,9 @@
+# 1 
+
+cloner le git 
+
+
+
 ID connexion : Name = adm
                mdp = adm
 
