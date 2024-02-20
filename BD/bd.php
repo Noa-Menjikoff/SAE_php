@@ -68,8 +68,9 @@ try {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         nom VARCHAR(255) NOT NULL,
         duree INT NOT NULL,
+        description TEXT NOT NULL,
         album_id INT NOT NULL,
-        son VARCHAR(255) NOT NULL,
+        son VARCHAR(255) DEFAULT NULL,
         FOREIGN KEY (album_id) REFERENCES Albums(id)
     )");
 
